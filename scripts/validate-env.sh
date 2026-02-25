@@ -2,6 +2,7 @@
 # validate-env.sh — .env 파일과 API 키의 기본 위생 검사
 # Usage: bash scripts/validate-env.sh [project-root]
 # 실제 API 호출은 하지 않음. 형식·인코딩 문제만 감지.
+# ⚠️ 보안: 환경 변수의 키(Key) 이름만 출력. 값(Value)은 절대 출력하지 않음.
 
 ROOT="${1:-.}"
 ERRORS=0
@@ -34,7 +35,7 @@ else
     echo "✅ 숨겨진 문자 없음"
   elif [ $? -eq 1 ]; then
     echo "❌ 숨겨진 제어 문자 발견:"
-    perl -nle 'print "$.: $_" if /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/' "$ENV_FOUND" | head -5
+    perl -nle 'if (/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/) { /^([^=]+=)/; print "$.: $1***" }' "$ENV_FOUND" | head -5
     echo "   → 해결: 해당 줄을 직접 타이핑으로 재입력"
     ERRORS=$((ERRORS + 1))
   fi
@@ -52,13 +53,13 @@ else
   SUSPICIOUS_QUOTES=$(grep -nE '^[A-Za-z_]+="[^"]*"' "$ENV_FOUND" 2>/dev/null | wc -l)
   if [ "$SUSPICIOUS_QUOTES" -gt 0 ]; then
     echo "⚠️ 따옴표로 감싸진 값 ${SUSPICIOUS_QUOTES}건 — Docker/Vercel에서 따옴표가 값에 포함될 수 있음:"
-    grep -nE '^[A-Za-z_]+="[^"]*"' "$ENV_FOUND" | head -3
+    grep -nE '^[A-Za-z_]+="[^"]*"' "$ENV_FOUND" | sed 's/=.*/=***/' | head -3
     echo "   → 대부분의 경우 따옴표 제거가 안전: KEY=value (공백 없으면)"
     WARNINGS=$((WARNINGS + 1))
   fi
 
   # --- 4. 빈 값 감지 ---
-  EMPTY_KEYS=$(grep -nE '^[A-Za-z_]+=\s*$' "$ENV_FOUND" 2>/dev/null)
+  EMPTY_KEYS=$(grep -nE '^[A-Za-z_]+=\s*$' "$ENV_FOUND" 2>/dev/null | sed 's/=.*//')
   if [ -n "$EMPTY_KEYS" ]; then
     EMPTY_COUNT=$(echo "$EMPTY_KEYS" | wc -l)
     echo "⚠️ 빈 값 ${EMPTY_COUNT}건:"
@@ -128,6 +129,24 @@ if [ -f "$PKG" ] && [ -n "$ENV_FOUND" ]; then
       fi
     fi
   done
+
+  # --- 8. Supabase SSL 검증 ---
+  if grep -q '"@supabase/supabase-js"' "$PKG" 2>/dev/null || grep -q '"@prisma/client"' "$PKG" 2>/dev/null; then
+    DB_URL_LINE=$(grep -E '^DATABASE_URL=' "$ENV_FOUND" 2>/dev/null | head -1)
+    if [ -n "$DB_URL_LINE" ]; then
+      if echo "$DB_URL_LINE" | grep -qi 'supabase'; then
+        if echo "$DB_URL_LINE" | grep -qi 'sslmode'; then
+          echo "✅ Supabase DATABASE_URL에 sslmode 설정됨"
+        else
+          echo "❌ Supabase DATABASE_URL에 sslmode 없음 — 중간자 공격(MITM) 위험!"
+          echo "   → 해결: Supabase 대시보드 → Database → SSL Enforcement 활성화"
+          echo "   → DATABASE_URL에 ?sslmode=verify-full 추가"
+          echo "   → SSL 인증서: 대시보드 → Database → Connection info → Download Certificate"
+          ERRORS=$((ERRORS + 1))
+        fi
+      fi
+    fi
+  fi
 fi
 
 # --- 결과 ---

@@ -51,7 +51,8 @@ bash scripts/validate-env.sh
 - 빈 값, 중복 키
 - SDK ↔ 환경 변수 교차 확인 (SDK는 설치되어 있으나 키가 없는 경우)
 
-스크립트 출력을 확인한 후 진행. 잘못된 감지가 있으면 수동 수정.
+스크립트 출력을 화면에 표시한 후, **반드시 사용자에게 "이 분석 결과로 세팅을 진행할까요?"라고 묻고 승인을 받은 뒤** Step 2로 넘어간다.
+잘못된 감지가 있으면 사용자가 수정 지시 → 반영 후 재확인.
 
 ### Step 2: CLAUDE.md 생성
 
@@ -71,6 +72,14 @@ CLAUDE.md 생성 핵심 규칙:
 ### Step 3: .claude/ 설정 생성
 
 스킬의 `.claude/` 템플릿에서 복사 후 프로젝트에 맞게 커스터마이징:
+
+**{{변수}} 치환 원칙:** Step 1의 analyze-project.sh 출력값을 사용한다.
+- `{{PKG_MANAGER}}` → 락파일 감지 결과 (bun.lockb → `bun`, pnpm-lock.yaml → `pnpm`, package-lock.json → `npm`)
+- `{{TEST_CMD}}` → 테스트 프레임워크 감지 결과 (vitest → `bun test`, jest → `npm test` 등)
+- `{{TYPECHECK_CMD}}` → TypeScript 있으면 `{{PKG_MANAGER}} run typecheck`, 없으면 제거
+- `{{LINT_CMD}}` → 포매터 감지 결과 (biome → `biome check`, eslint → `eslint .` 등)
+
+**TODO/Placeholder 금지:** 최종 생성 파일에 `TODO`, `FIXME`, `Placeholder`, `여기에 작성` 등이 남아있으면 안 된다. 계획서에 정보가 부족하면 합리적 기본값으로 채우고 `[추정]` 표시.
 
 **항상 생성 (기본 18파일):**
 
@@ -107,6 +116,20 @@ CLAUDE.md 생성 핵심 규칙:
 |------|------------|
 | `skills/dependencies/SKILL.md` | frontmatter 유지, 계획서 의존성 호환성 메모로 재작성. |
 
+**조건부 생성 (계획서에 도메인 스킬이 정의된 경우):**
+
+계획서 4번 "구현 설계"의 스킬 목록 테이블에 항목이 있으면, 각 스킬을 `.claude/skills/`에 생성한다.
+
+| 파일 | 커스터마이징 |
+|------|------------|
+| `skills/{스킬명}/SKILL.md` | 계획서의 역할·트리거 조건을 기반으로 frontmatter + 규칙 작성. |
+
+생성 규칙:
+- `name`: 계획서 스킬명 (kebab-case)
+- `description`: 계획서의 "역할" 열 (Claude 자동 발견용, 구체적으로)
+- `user-invocable`: 사용자가 직접 `/스킬명`으로 호출하면 true, Claude가 자동 판단이면 false
+- 본문: 계획서의 역할·트리거 조건·관련 기능 요구사항을 구체적 규칙으로 변환. TODO 남기지 않음.
+
 ### Step 4: 검증
 
 ```bash
@@ -117,6 +140,7 @@ bash scripts/validate-env.sh
 검증 항목:
 - CLAUDE.md 존재 여부 및 80줄 이하 확인
 - 치환되지 않은 `{{변수}}` 잔존 여부
+- TODO/FIXME/Placeholder 잔존 여부 (모든 생성 파일 대상)
 - 필수 `.claude/skills/` 디렉토리에 SKILL.md 존재 확인
 - Claude가 이미 아는 패턴 경고 (⚠️ 경고만, 에러 아님)
 - settings.json JSON 유효성

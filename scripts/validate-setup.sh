@@ -33,6 +33,24 @@ else
     echo "✅ No unreplaced variables"
   fi
 
+  # --- 3a. TODO/Placeholder 잔존 체크 ---
+  TODO_COUNT=0
+  for CHECK_FILE in "$ROOT/CLAUDE.md" "$ROOT"/.claude/skills/*/SKILL.md "$ROOT"/.claude/agents/*.md "$ROOT"/.claude/hooks/*.sh "$ROOT"/.claude/commands/*.md; do
+    if [ -f "$CHECK_FILE" ]; then
+      FOUND=$(grep -cinE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$CHECK_FILE" 2>/dev/null || echo 0)
+      if [ "$FOUND" -gt 0 ]; then
+        echo "❌ TODO/Placeholder found in $(basename "$CHECK_FILE"):"
+        grep -niE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$CHECK_FILE" | head -3
+        TODO_COUNT=$((TODO_COUNT + FOUND))
+      fi
+    fi
+  done
+  if [ "$TODO_COUNT" -gt 0 ]; then
+    ERRORS=$((ERRORS + 1))
+  else
+    echo "✅ No TODO/Placeholder残留"
+  fi
+
   # --- 3b. Skills frontmatter 검증 ---
   for SKILL_DIR in "$ROOT"/.claude/skills/*/; do
     SKILL_FILE="$SKILL_DIR/SKILL.md"

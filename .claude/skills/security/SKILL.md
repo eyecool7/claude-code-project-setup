@@ -46,6 +46,22 @@ user-invocable: false
 - 기본: same-origin 유지
 - 외부 접근 필요 시 명시적 allowlist
 
+## Supabase SSL (해당 시 필수)
+
+Supabase 프로젝트는 반드시 Postgres SSL Enforcement를 설정한다:
+
+1. **대시보드**: Database → SSL Enforcement → Enable
+2. **인증서**: Database → Connection info → Download Certificate (`prod-ca-2021.crt`)
+3. **DATABASE_URL**: `?sslmode=verify-full` 파라미터 필수
+4. **Prisma 사용 시**:
+   ```
+   DATABASE_URL="postgresql://...?sslmode=verify-full&sslrootcert=prod-ca-2021.crt"
+   ```
+5. **Supabase JS 클라이언트**: HTTPS 기본 적용 (추가 설정 불필요)
+6. **Direct connection / Prisma / 서버 사이드 DB 접속**: 반드시 SSL 인증서 적용
+
+미설정 시 중간자 공격(MITM)으로 DB 쿼리·응답이 도청/변조될 수 있다.
+
 ## 인증/인가
 
 <!-- TODO: 프로젝트별 보호 경로 목록 채우기 -->

@@ -142,9 +142,13 @@ cp -r /tmp/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
 
 #### 스킬 목록
 
-| 스킬명 | 역할 | 트리거 조건 |
-|--------|------|------------|
-| | | |
+> 이 프로젝트만의 **도메인 전용 스킬**만 정의한다.
+> 범용 스킬(error-handling, testing, security, conventions 등)은 세팅 스킬이 자동 포함하므로 여기에 쓰지 않는다.
+> 여기에 정의된 스킬은 세팅 시 `.claude/skills/{스킬명}/SKILL.md`로 자동 생성된다.
+
+| 스킬명 | 역할 | 트리거 조건 | user-invocable |
+|--------|------|------------|:--------------:|
+| (예: image-generation) | (나노바나나프로 이미지 생성) | (이미지 생성·편집 작업 시) | false |
 
 스킬 vs 서브에이전트 구분:
 | 스킬 | 서브에이전트 |
