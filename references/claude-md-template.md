@@ -49,9 +49,12 @@
 확인 필요: {{ASK_LIST}}
 금지: rm -rf, .env 수정{{DENY_EXTRAS}}
 
-## 교훈
+## 세션 간 연속성
 
-실수/해결책은 `.claude/lessons.md`에 기록. 세션마다 자동 로드됨.
+- 실수/해결책 → `.claude/lessons.md`에 기록
+- 기술 결정/계획 변경 → `.claude/decisions.md`에 기록 (기능 추가·삭제, API 확정, 스택 변경, 설계 변경 시 반드시)
+- IMPORTANT: 디버깅·성능 수정 중이라도 라이브러리 교체나 패턴 변경이 발생하면 decisions.md에 기록
+- IMPORTANT: 세션 종료 전 "계획서 대비 달라진 점" 자체 점검 → 미기록 결정 소급 기록
 
 ## 병렬 작업
 

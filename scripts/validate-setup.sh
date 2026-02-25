@@ -134,6 +134,7 @@ REQUIRED_FILES=(
   ".claude/agents/code-reviewer.md"
   ".claude/agents/debugger.md"
   ".claude/lessons.md"
+  ".claude/decisions.md"
 )
 
 for FILE in "${REQUIRED_FILES[@]}"; do

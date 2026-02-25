@@ -103,6 +103,7 @@ CLAUDE.md 생성 핵심 규칙:
 | `agents/code-reviewer.md` | 그대로 복사 |
 | `agents/debugger.md` | 그대로 복사 |
 | `lessons.md` | 그대로 복사 (빈 템플릿) |
+| `decisions.md` | 그대로 복사 (빈 템플릿) |
 
 **조건부 생성 (HAS_FRONTEND=true):**
 
