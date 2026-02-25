@@ -39,20 +39,22 @@ git clone --depth 1 https://github.com/shanraisshan/claude-code-best-practice /t
 cat /tmp/awesome-skills/README.md
 ```
 
-### 2.5순위: 로컬 레퍼런스 (~/references/ — 항상 우선 탐색)
+### 2.5순위: 종합 가이드 (MCP + 스킬 카탈로그)
 ```bash
 # vive-md: MCP/Skills 종합 가이드 + 380개+ 스킬 한국어 카탈로그
-# - MCP 서버 선정: ~/references/vive-md/vibe-coding/mcp/04-MCP-서버-카탈로그.md
-# - MCP 설정 패턴: ~/references/vive-md/vibe-coding/mcp/03-MCP-실전-패턴-모음.md
-# - 스킬 카탈로그: ~/references/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md
-# - 스킬 작성법: ~/references/vive-md/vibe-coding/skills/ (README + 01~03)
-cat ~/references/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md
+git clone --depth 1 https://github.com/johunsang/vive-md.git /tmp/vive-md
+# - MCP 서버 선정: /tmp/vive-md/vibe-coding/mcp/04-MCP-서버-카탈로그.md
+# - MCP 설정 패턴: /tmp/vive-md/vibe-coding/mcp/03-MCP-실전-패턴-모음.md
+# - 스킬 카탈로그: /tmp/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md
+# - 스킬 작성법: /tmp/vive-md/vibe-coding/skills/ (README + 01~03)
+cat /tmp/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md
 
 # ui-ux-pro-max: UI/UX 디자인 인텔리전스 스킬 (프론트엔드 프로젝트 필수)
 # - BM25 검색엔진 + 67 UI스타일, 96 팔레트, 57 타이포, 13 스택 지원
-# - 설치: cd [project-root] && uipro init --ai claude
-# - 또는 수동: cp -r ~/references/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
-ls ~/references/ui-ux-pro-max-skill/.claude/skills/
+git clone --depth 1 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git /tmp/ui-ux-pro-max-skill
+# 설치: cp -r /tmp/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
+# 또는: npm install -g uipro-cli && uipro init --ai claude
+ls /tmp/ui-ux-pro-max-skill/.claude/skills/
 ```
 
 **규칙: 프론트엔드가 포함된 프로젝트면 ui-ux-pro-max를 무조건 설치한다.**

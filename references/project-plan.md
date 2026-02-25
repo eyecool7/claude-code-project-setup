@@ -92,22 +92,27 @@
 
 #### MCP 서버 선정
 
-기술 스택이 정해지면 아래 로컬 레퍼런스를 검색하여 적합한 MCP 서버를 선정한다:
-- **서버 카탈로그**: `~/references/vive-md/vibe-coding/mcp/04-MCP-서버-카탈로그.md` — 스택별 추천 매트릭스 + 조합 레시피
-- **설정 패턴**: `~/references/vive-md/vibe-coding/mcp/03-MCP-실전-패턴-모음.md` — 검증된 `.mcp.json` 설정 복사
-- **트러블슈팅**: `~/references/vive-md/vibe-coding/mcp/README.md` (섹션 9) — 설정 오류 해결
+기술 스택이 정해지면 아래 레퍼런스를 클론하여 검색하고 적합한 MCP 서버를 선정한다:
+```bash
+git clone --depth 1 https://github.com/johunsang/vive-md.git /tmp/vive-md
+```
+- **서버 카탈로그**: `/tmp/vive-md/vibe-coding/mcp/04-MCP-서버-카탈로그.md` — 스택별 추천 매트릭스 + 조합 레시피
+- **설정 패턴**: `/tmp/vive-md/vibe-coding/mcp/03-MCP-실전-패턴-모음.md` — 검증된 `.mcp.json` 설정 복사
+- **트러블슈팅**: `/tmp/vive-md/vibe-coding/mcp/README.md` (섹션 9) — 설정 오류 해결
 
 산출물: 확정된 `.mcp.json`
 
 #### 스킬 선정
 
-아래 레퍼런스를 검색하여 프로젝트에 필요한 스킬을 선정한다:
-- **스킬 카탈로그**: `~/references/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md` — 380개+ 스킬 탐색
-- **스킬 작성법**: `~/references/vive-md/vibe-coding/skills/` — 커스텀 스킬 작성 시 구조/패턴 참조
+위에서 클론한 vive-md 레포를 검색하여 프로젝트에 필요한 스킬을 선정한다:
+- **스킬 카탈로그**: `/tmp/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md` — 380개+ 스킬 탐색
+- **스킬 작성법**: `/tmp/vive-md/vibe-coding/skills/` — 커스텀 스킬 작성 시 구조/패턴 참조
 
 **필수 규칙: 프론트엔드가 포함된 프로젝트면 ui-ux-pro-max 스킬을 무조건 설치한다.**
-- UI/UX 스킬: `~/references/ui-ux-pro-max-skill/`
-- 설치: `uipro init --ai claude` 또는 수동 복사
+```bash
+git clone --depth 1 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git /tmp/ui-ux-pro-max-skill
+cp -r /tmp/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
+```
 
 산출물: 설치할 스킬 목록 + 설치 명령어
 
