@@ -2,7 +2,9 @@
 
 [English](README.en.md)
 
-Claude Code 프로젝트 세팅 자동화 플러그인. 프로젝트 설명 한줄로 고도화된 계획서를 생성하고, 그 계획서를 바탕으로 맞춤형 CLAUDE.md + rules + skills + agents + mcps + hooks를 생성한다.
+커맨드 3개로 Claude Code 프로젝트 세팅을 끝내주는 플러그인.
+
+무작정 복붙한 범용 템플릿으로 컨텍스트 낭비하는 건 이제 그만. 2단계 인터뷰로 프로젝트 계획서를 먼저 고도화한 뒤, 그 계획서에 기반해 CLAUDE.md(55줄) + path-scoped rules + auto-discovered skills + agents + hooks + MCP까지 18개 이상의 설정 파일을 프로젝트에 맞게 생성한다.
 
 ## 사용 방법
 

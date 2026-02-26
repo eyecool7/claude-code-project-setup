@@ -2,7 +2,9 @@
 
 [한국어](README.md)
 
-Automated Claude Code project setup plugin. Generate a refined project plan from a single project description, then produce tailored CLAUDE.md + rules + skills + agents + mcps + hooks based on that plan.
+Set up your entire Claude Code project in 3 commands.
+
+Stop wasting context on copy-pasted generic templates. This plugin refines your project plan through a 2-step interview first, then generates 18+ config files tailored to your project: CLAUDE.md (~55 lines) + path-scoped rules + auto-discovered skills + agents + hooks + MCP.
 
 ## Usage
 
