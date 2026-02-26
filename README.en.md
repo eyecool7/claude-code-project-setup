@@ -1,18 +1,43 @@
 # claude-code-project-setup
 
-Automated Claude Code project setup skill. Generate a refined project plan from a single project description, then produce tailored CLAUDE.md + rules + skills + agents + mcps + hooks based on that plan.
+[한국어](README.md)
 
-| Step | Where | How |
-|------|-------|-----|
-| **Step 1** Write plan | claude.ai | Fill in Project Overview in `claude-ai-project-plan-prompt.md`, send entire prompt → Claude interviews → save as **project-plan.md** |
-| **Step 2** Refine plan | Claude Code (Plan mode) | Enter `claude-code-plan-mode-prompt.md` prompt → deep technical interview refines **project-plan.md** |
-| **Step 3** Install skill | Local machine | Clone this repo → copy needed files ([install↓](#step-3-install-skill--local-machine)) |
-| **Step 4** Run setup | Claude Code | Enter `setup-prompt.md` prompt → generates CLAUDE.md + .claude/ + .mcp.json |
-| **Step 5** Start dev | Claude Code | `/clear` → `Start project development` |
+Automated Claude Code project setup plugin. Generate a refined project plan from a single project description, then produce tailored CLAUDE.md + rules + skills + agents + mcps + hooks based on that plan.
+
+## Usage
+
+| Step | Command | Description |
+|------|---------|-------------|
+| **1** | `/project-setup:plan` | Outputs planning prompt → **paste into claude.ai** → interview → save **project-plan.md** to project root |
+| **2** | `/project-setup:refine` | Deep technical interview in Plan mode → refine **project-plan.md** |
+| **3** | `/project-setup:setup` | Auto-generate CLAUDE.md + .claude/ + .mcp.json from plan |
+
+> **Recommended:** Run Steps 1-2 (planning) and Step 3 (implementation) in separate sessions. Planning conversation history pollutes implementation context.
 
 ---
 
-### What the Plan Covers (Step 1)
+## Installation
+
+### Plugin Marketplace (Recommended)
+
+```bash
+# Install from marketplace
+claude plugin add claude-code-project-setup
+```
+
+### Manual Install
+
+```bash
+# Clone this repo
+git clone https://github.com/johunsang/claude-code-project-setup.git
+
+# Install as local plugin
+claude plugin install ./claude-code-project-setup
+```
+
+---
+
+## What the Plan Covers
 
 | Section | Contents | Required |
 |---------|----------|----------|
@@ -25,127 +50,23 @@ Automated Claude Code project setup skill. Generate a refined project plan from 
 
 ---
 
-## Step 3: Install Skill — Local Machine
-
-### Quick Install (git clone)
-
-```bash
-cd my-project  # Navigate to your project folder
-
-# Clone this repo temporarily
-git clone https://github.com/YOUR_USERNAME/claude-code-project-setup.git /tmp/setup-skill
-
-# Copy only the needed files
-cp /tmp/setup-skill/SKILL.md .
-cp -r /tmp/setup-skill/.claude .
-cp -r /tmp/setup-skill/references .
-cp -r /tmp/setup-skill/scripts .
-
-# Remove temp clone
-rm -rf /tmp/setup-skill
-```
-
-### Manual Install (zip download)
-
-Download the zip from GitHub and copy these files to your project folder:
-
-```
-Repo contents                          →    Place in my-project/
-───────────────────────────────         ──────────────────
-SKILL.md                          →    my-project/SKILL.md
-.claude/                          →    my-project/.claude/
-references/                       →    my-project/references/
-scripts/                          →    my-project/scripts/
-```
-
-### Folder State After Step 3
-
-```
-my-project/
-│
-│  ── Setup skill (deleted after setup) ─────────────────
-├── SKILL.md                     ← Setup instructions for Claude Code
-├── references/
-│   ├── claude-md-template.md    ← Template for CLAUDE.md generation
-│   ├── claude-ai-project-plan-prompt.md    ← Planning prompt
-│   ├── claude-code-plan-mode-prompt.md    ← Plan mode interview prompt
-│   └── setup-prompt.md          ← Setup prompt
-├── scripts/
-│   ├── analyze-project.sh       ← Project analysis automation
-│   ├── validate-env.sh          ← Environment variable hygiene check
-│   └── validate-setup.sh        ← Setup result validation
-│
-│  ── .claude/ (template state) ─────────────────────────
-├── .claude/
-│   ├── commands/
-│   │   ├── check.md             ← /check command
-│   │   ├── commit-push-pr.md    ← /commit-push-pr command
-│   │   └── review.md            ← /review command
-│   ├── hooks/
-│   │   ├── session-start.sh     ← Auto-run on session start
-│   │   ├── edit-monitor.sh      ← Repeated edit detection (hint)
-│   │   └── pre-commit-check.sh  ← ⚠️ Still has {{variables}}
-│   ├── rules/                   ← ⚠️ Still TODO templates (passive rules)
-│   │   ├── conventions.md       ← Always loaded
-│   │   ├── security.md          ← Path-scoped (api, auth, middleware)
-│   │   ├── error-handling.md    ← Path-scoped (services, api)
-│   │   ├── testing.md           ← Path-scoped (test/spec files)
-│   │   ├── frontend/react.md    ← (Frontend) path-scoped (tsx, components)
-│   │   ├── frontend/styles.md   ← (Frontend) path-scoped (css, scss)
-│   │   └── database.md          ← (Backend+DB) path-scoped (db, prisma)
-│   ├── skills/                  ← ⚠️ Still TODO/{{variable}} templates (active workflows)
-│   │   ├── dependencies/SKILL.md
-│   │   ├── design-rules/SKILL.md
-│   │   ├── easy-refactoring/SKILL.md
-│   │   ├── project-directory/SKILL.md
-│   │   └── skill-discovery/SKILL.md
-│   ├── agents/
-│   │   ├── test-runner.md       ← ⚠️ {{TEST_CMD}} etc. still templated
-│   │   ├── code-reviewer.md
-│   │   └── debugger.md
-│   ├── lessons.md               ← Empty template (populated during dev)
-│   └── settings.json
-│
-│  ── Planning output (from Steps 1-2) ──────────────────
-└── project-plan.md
-│
-│  ── Not yet created ───────────────────────────────────
-│  (CLAUDE.md — created in Step 4)
-│  (.git — initialized in Step 4)
-```
-
----
-
-## Step 4: What Happens During Setup
+## What Setup Generates
 
 | File | Change |
 |------|--------|
 | **CLAUDE.md** | ⭐ **Created** — Based on plan, ~55 lines |
-| .claude/rules/error-handling | 📝 **TODOs filled** — Based on plan's error strategy |
-| .claude/rules/security | 📝 **TODOs filled** — Based on plan's auth/security model |
-| .claude/rules/testing | 📝 **TODOs filled** — Project test tools & mock targets |
-| .claude/rules/conventions | 📝 As-is (additions if project has extra conventions) |
-| .claude/rules/frontend/* | 📝 **TODOs filled** — Frontend projects only |
-| .claude/rules/database | 📝 **TODOs filled** — Backend+DB projects only |
-| .claude/skills/project-directory | 📝 **TODOs filled** — Actual directory structure |
-| .claude/skills/easy-refactoring | 📝 As-is |
-| .claude/skills/skill-discovery | 📝 As-is |
-| .claude/skills/design-rules | 📝 **TODOs filled** — Frontend projects only |
-| .claude/skills/dependencies | 📝 **TODOs filled** — Only when dependency gotchas exist |
-| **.mcp.json** | ⭐ **Created** — Based on plan's MCP servers (skipped if none) |
-| .claude/agents/test-runner | 📝 **Modified** — {{TEST_CMD}} substituted |
-| .claude/hooks/pre-commit-check.sh | 📝 **Modified** — Project validation commands |
-| .claude/commands/check.md | 📝 **Modified** — Package manager commands |
+| .claude/rules/ (4-7) | 📝 **TODOs filled** — conventions, security, error-handling, testing + conditional (frontend, database) |
+| .claude/skills/ (3-5) | 📝 **TODOs filled** — project-directory, easy-refactoring, skill-discovery + conditional (design-rules, dependencies) |
+| .claude/agents/ (3) | 📝 **Modified** — test-runner, code-reviewer, debugger |
+| .claude/commands/ (3) | 📝 **Modified** — /check, /review, /commit-push-pr |
+| .claude/hooks/ (3) | 📝 **Modified** — session-start, edit-monitor, pre-commit-check |
 | .claude/settings.json | 📝 **Modified** — Permissions/hooks config |
+| **.mcp.json** | ⭐ **Created** — Based on plan's MCP servers (skipped if none) |
 | .git/ | ⭐ **Created** — git init + first commit |
-| SKILL.md | 🗑️ **Deleted** |
-| references/ | 🗑️ **Deleted** |
-| scripts/ | 🗑️ **Deleted** |
-| README.md | 🗑️ **Deleted** |
 
 ---
 
-## Folder State After Step 5
+## Project State After Setup
 
 ```
 my-project/
@@ -187,6 +108,41 @@ my-project/
 - **Agents (3)** — Complex testing/review/debugging delegated to dedicated agents in independent context
 - **Lessons** — Session alerts when mistake records accumulate, preventing repeated errors
 - **Skill Discovery** — Auto-search and suggest external skills when needed (user confirmation before install)
+
+---
+
+## Plugin Structure
+
+```
+claude-code-project-setup/
+├── .claude-plugin/
+│   └── marketplace.json         ← Marketplace metadata
+├── plugins/
+│   └── project-setup/
+│       ├── .claude-plugin/
+│       │   └── plugin.json      ← Plugin definition
+│       ├── commands/
+│       │   ├── plan.md          ← /project-setup:plan
+│       │   ├── refine.md        ← /project-setup:refine
+│       │   └── setup.md         ← /project-setup:setup
+│       ├── templates/           ← Templates referenced during generation
+│       │   ├── claude-md-template.md
+│       │   ├── rules/
+│       │   ├── skills/
+│       │   ├── agents/
+│       │   ├── commands/
+│       │   ├── hooks/
+│       │   ├── settings.json
+│       │   ├── lessons.md
+│       │   └── decisions.md
+│       └── scripts/             ← Analysis/validation scripts
+│           ├── analyze-project.sh
+│           ├── validate-env.sh
+│           └── validate-setup.sh
+├── README.md
+├── README.en.md
+└── LICENSE
+```
 
 ---
 

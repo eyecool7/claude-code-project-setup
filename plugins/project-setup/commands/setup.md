@@ -1,24 +1,34 @@
 ---
-name: project-setup
-description: |
-  프로젝트에 맞는 Claude Code 설정(CLAUDE.md + .claude/)을 생성한다.
-  프로젝트 구조, 의존성, 프로젝트 계획서를 분석하여 settings, hooks, commands를 구성한다.
-  트리거: "setup", "init", "세팅", "프로젝트 시작", "새 프로젝트 설정", "configure project".
-  사용 금지: 기존 세팅 수정(/refresh), 코드 리뷰(/review), 계획서 작성(별도 프롬프트).
+description: 프로젝트 계획서(project-plan.md) 기반으로 CLAUDE.md + .claude/ 설정 자동 생성. 셋업, 세팅, init, setup, configure project 시 사용.
 ---
 
-# 프로젝트 초기 세팅 스킬
+# 프로젝트 초기 세팅
 
 프로젝트를 분석하고 Claude Code 설정 파일을 생성한다.
 
-**전제 조건:** 프로젝트 계획서가 이미 존재해야 한다 (파일 또는 대화 컨텍스트).
-이 스킬은 계획서를 만들지 않는다 — 소비할 뿐이다.
-계획서 작성은 별도 프롬프트(`references/claude-ai-project-plan-prompt.md`)를 사용하여 LLM과 대화로 완성한다.
+**전제 조건:** 프로젝트 계획서(`project-plan.md`)가 프로젝트 루트에 이미 존재해야 한다.
+이 커맨드는 계획서를 만들지 않는다 — 소비할 뿐이다.
+계획서 작성은 `/project-setup:plan` → `/project-setup:refine` 순서로 진행한다.
+
+## 플러그인 경로 초기화
+
+먼저 플러그인 루트 경로를 읽는다:
+
+```bash
+PLUGIN_ROOT=$(cat /tmp/.project-setup-root 2>/dev/null)
+if [ -z "$PLUGIN_ROOT" ]; then
+  echo "❌ 플러그인 루트를 찾을 수 없습니다. Claude Code를 재시작하세요."
+  exit 1
+fi
+echo "✅ 플러그인 경로: $PLUGIN_ROOT"
+```
+
+이후 모든 템플릿/스크립트 참조는 `$PLUGIN_ROOT` 기반으로 한다.
 
 ## 세션 전략 (2-Session 워크플로우)
 
-1. **세션 1 — 기획:** 프롬프트로 인터뷰 → 프로젝트 계획서 작성 → 파일 저장 → 세션 종료
-2. **세션 2 — 구현:** 새 세션 시작 → "project-plan.md 읽고 세팅해줘" → 이 스킬 실행
+1. **세션 1 — 기획:** `/project-setup:plan` + `/project-setup:refine`으로 계획서 작성 → 파일 저장 → 세션 종료
+2. **세션 2 — 구현:** 새 세션 시작 → `/project-setup:setup` → 이 커맨드 실행
 
 기획 대화의 수정 히스토리가 구현 컨텍스트를 오염시키므로 반드시 분리.
 
@@ -33,8 +43,9 @@ description: |
 ### Step 1: 프로젝트 분석 실행
 
 ```bash
-bash scripts/analyze-project.sh
-bash scripts/validate-env.sh
+PLUGIN_ROOT=$(cat /tmp/.project-setup-root)
+bash "$PLUGIN_ROOT/scripts/analyze-project.sh"
+bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 ```
 
 스크립트가 자동 감지하는 항목:
@@ -56,7 +67,7 @@ bash scripts/validate-env.sh
 
 ### Step 2: CLAUDE.md 생성
 
-`references/claude-md-template.md`를 기반으로 변수를 채운다:
+`$PLUGIN_ROOT/templates/claude-md-template.md`를 기반으로 변수를 채운다:
 - **계획서** → 프로젝트명, 역할, 철학, 핵심 플로우
 - **Step 1 출력** → 스택 상세, 핵심 경로, 개발 명령어, 권한
 - **의존성 분석** → 충돌 경고, 주의사항
@@ -71,7 +82,7 @@ CLAUDE.md 생성 핵심 규칙:
 
 ### Step 3: .claude/ 설정 생성
 
-스킬의 `.claude/` 템플릿에서 복사 후 프로젝트에 맞게 커스터마이징:
+`$PLUGIN_ROOT/templates/` 의 템플릿에서 복사 후 프로젝트에 맞게 커스터마이징:
 
 **{{변수}} 치환 원칙:** Step 1의 analyze-project.sh 출력값을 사용한다.
 - `{{PKG_MANAGER}}` → 락파일 감지 결과 (bun.lockb → `bun`, pnpm-lock.yaml → `pnpm`, package-lock.json → `npm`)
@@ -195,8 +206,9 @@ rm -rf /tmp/ui-ux-pro-max-skill
 ### Step 4: 검증
 
 ```bash
-bash scripts/validate-setup.sh
-bash scripts/validate-env.sh
+PLUGIN_ROOT=$(cat /tmp/.project-setup-root)
+bash "$PLUGIN_ROOT/scripts/validate-setup.sh"
+bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 ```
 
 검증 항목:
@@ -227,6 +239,8 @@ bash scripts/validate-env.sh
   3. /check로 상태 확인
   4. 새 세션에서 구현 시작 (클린 컨텍스트)
 ```
+
+셋업 완료 후 git init + 첫 커밋을 진행한다.
 
 ## 예시
 
