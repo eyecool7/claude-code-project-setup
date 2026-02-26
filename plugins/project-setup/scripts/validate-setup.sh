@@ -36,17 +36,22 @@ else
 
   # --- 3a. TODO/Placeholder 잔존 체크 ---
   TODO_COUNT=0
-  for CHECK_FILE in "$ROOT/CLAUDE.md" $(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null) $(find "$ROOT/.claude/skills" -name "SKILL.md" 2>/dev/null) "$ROOT"/.claude/agents/*.md "$ROOT"/.claude/hooks/*.sh "$ROOT"/.claude/commands/*.md; do
-    if [ -f "$CHECK_FILE" ]; then
-      FOUND=0
-      FOUND=$(grep -ciE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$CHECK_FILE" 2>/dev/null) || true
-      if [ "$FOUND" -gt 0 ]; then
-        echo "❌ TODO/Placeholder found in $(basename "$CHECK_FILE"):"
-        grep -niE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$CHECK_FILE" | head -3
-        TODO_COUNT=$((TODO_COUNT + FOUND))
+  _check_todo() {
+    local f="$1"
+    if [ -f "$f" ]; then
+      local cnt=0
+      cnt=$(grep -ciE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$f" 2>/dev/null) || true
+      if [ "$cnt" -gt 0 ]; then
+        echo "❌ TODO/Placeholder found in $(basename "$f"):"
+        grep -niE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$f" | head -3
+        TODO_COUNT=$((TODO_COUNT + cnt))
       fi
     fi
-  done
+  }
+  _check_todo "$ROOT/CLAUDE.md"
+  while IFS= read -r f; do _check_todo "$f"; done < <(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null)
+  while IFS= read -r f; do _check_todo "$f"; done < <(find "$ROOT/.claude/skills" -name "SKILL.md" 2>/dev/null)
+  for f in "$ROOT"/.claude/agents/*.md "$ROOT"/.claude/hooks/*.sh "$ROOT"/.claude/commands/*.md; do _check_todo "$f"; done
   if [ "$TODO_COUNT" -gt 0 ]; then
     ERRORS=$((ERRORS + 1))
   else
@@ -73,7 +78,7 @@ else
 
   # --- 3b-2. Rules 검증 ---
   RULE_COUNT=0
-  for RULE_FILE in $(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null); do
+  while IFS= read -r RULE_FILE; do
     if [ -f "$RULE_FILE" ]; then
       RULE_COUNT=$((RULE_COUNT + 1))
       # paths frontmatter가 있으면 YAML 유효성 기본 체크
@@ -83,7 +88,7 @@ else
         fi
       fi
     fi
-  done
+  done < <(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null)
   if [ "$RULE_COUNT" -gt 0 ]; then
     echo "✅ Rules: ${RULE_COUNT} found"
   fi

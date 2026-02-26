@@ -57,7 +57,6 @@ echo "✅ 플러그인 경로: $PLUGIN_ROOT"
 ### Step 1: 프로젝트 분석 실행
 
 ```bash
-PLUGIN_ROOT=$(cat /tmp/.project-setup-root)
 bash "$PLUGIN_ROOT/scripts/analyze-project.sh"
 bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 ```
@@ -220,7 +219,6 @@ rm -rf /tmp/ui-ux-pro-max-skill
 ### Step 4: 검증
 
 ```bash
-PLUGIN_ROOT=$(cat /tmp/.project-setup-root)
 bash "$PLUGIN_ROOT/scripts/validate-setup.sh"
 bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 ```
