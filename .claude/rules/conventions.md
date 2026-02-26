@@ -1,9 +1,3 @@
----
-name: conventions
-description: 네이밍 규칙, import 순서, 타입 정의, 주석 규칙 등 코딩 컨벤션 관련 코드 작성 시 사용.
-user-invocable: false
----
-
 # 코딩 컨벤션
 
 ## 네이밍 규칙

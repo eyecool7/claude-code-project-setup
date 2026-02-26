@@ -1,7 +1,10 @@
 ---
-name: security
-description: 인증, 인가, 입력 검증, 사용자 데이터·시크릿·외부 입력을 다루는 코드 작성 시 사용.
-user-invocable: false
+paths:
+  - "src/api/**"
+  - "src/auth/**"
+  - "src/middleware/**"
+  - "src/services/**"
+  - "app/api/**"
 ---
 
 # 보안 규칙

@@ -52,64 +52,10 @@ colors: {
 }
 ```
 
-### 폰트 사이즈 스케일
-<!-- TODO: 프레임워크 기본 또는 커스텀 -->
-- xs (12px) — 메타 정보
-- sm (14px) — 보조 텍스트
-- base (16px) — 본문
-- lg (18px) — 카드 제목
-- xl (20px) — 섹션 제목
-- 2xl~ — 히어로/강조
-
-### 브레이크포인트
-```
-sm: 640px    — 모바일
-md: 768px    — 태블릿
-lg: 1024px   — 데스크탑
-xl: 1280px   — 와이드
-```
-
-### 그림자/라운딩
-- 카드: rounded-lg shadow-sm hover:shadow-md
-- 모달: rounded-lg shadow-xl
-- 배지: rounded-full
-- 버튼: rounded-md
-
-### 스페이싱
-- 아이템 간 간격: 최소 16px
-- 섹션 간 간격: 최소 32px
-- 카드/아이템 그리드: 반응형 (1/2/3열)
-
 ---
 
-## 컴포넌트 구조
+## 관련 Rules (자동 로드)
 
-### 파일 구조
-```
-components/
-├── ui/                 # 재사용 기본 (Button, Badge, Card, Modal)
-├── {{DOMAIN_A}}/       # 도메인별 그룹
-├── {{DOMAIN_B}}/       # 도메인별 그룹
-└── shared/             # 공통 (Header, Sidebar, Loading, ErrorBoundary)
-```
-<!-- TODO: setup이 프로젝트 구조 분석 후 도메인 폴더 채움 -->
-
-### Props 네이밍
-- 이벤트 핸들러: `onAction` (onClick, onSubmit, onChange)
-- 불리언: `is/has` 접두사 (isActive, hasError)
-- 데이터: 명사 (user, items, config)
-
-### 상태 관리
-- 서버 상태: React Query / SWR / 프레임워크 기본
-- 클라이언트 상태: useState / useReducer
-- 전역 상태: 필요 시에만 (Zustand / Jotai 등)
-- URL 상태: 필터/정렬/페이지네이션 → searchParams
-
-### 접근성 필수
-- 모든 인터랙티브 요소에 `aria-label`
-- 키보드 네비게이션 지원
-- 토글 → `aria-pressed`
-- 색상만으로 상태 구분 금지 (아이콘 병행)
-
-### 컴포넌트 3상태
-- loading → 빈 상태 → 에러 상태 항상 처리
+아래 규칙은 `.claude/rules/`에서 path 매칭으로 자동 적용된다:
+- 컴포넌트 구조, Props, 접근성, 상태 관리 → `.claude/rules/frontend/react.md`
+- 폰트 스케일, 브레이크포인트, 그림자/라운딩, 스페이싱 → `.claude/rules/frontend/styles.md`

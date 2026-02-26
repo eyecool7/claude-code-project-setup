@@ -13,7 +13,7 @@ description: |
 
 **전제 조건:** 프로젝트 계획서가 이미 존재해야 한다 (파일 또는 대화 컨텍스트).
 이 스킬은 계획서를 만들지 않는다 — 소비할 뿐이다.
-계획서 작성은 별도 프롬프트(`references/project-plan.md`)를 사용하여 LLM과 대화로 완성한다.
+계획서 작성은 별도 프롬프트(`references/claude-ai-project-plan-prompt.md`)를 사용하여 LLM과 대화로 완성한다.
 
 ## 세션 전략 (2-Session 워크플로우)
 
@@ -67,7 +67,7 @@ CLAUDE.md 생성 핵심 규칙:
 - 의존성 충돌 감지 시 핵심 규칙 섹션에 ⚠️ 경고 추가
 - **검증 섹션을 핵심 규칙 바로 다음에 배치** — 가장 중요한 3줄
 - 목표: 55줄 내외. 80줄 절대 초과 금지.
-- 상세 규칙은 `.claude/skills/`에 별도 SKILL.md로 분리 (Claude가 자동 발견)
+- 수동적 규칙은 `.claude/rules/`에 분리 (자동 로드 + path 스코프), 능동적 워크플로우는 `.claude/skills/`에 분리
 
 ### Step 3: .claude/ 설정 생성
 
@@ -83,6 +83,25 @@ CLAUDE.md 생성 핵심 규칙:
 
 **항상 생성 (기본 18파일):**
 
+Rules (수동적 규칙 — 자동 로드):
+
+| 파일 | 커스터마이징 |
+|------|------------|
+| `rules/conventions.md` | 그대로 복사. 프로젝트 추가 컨벤션 있으면 추가. |
+| `rules/security.md` | 템플릿 복사 후 TODO를 계획서 보안/인증 요구사항으로 채움. paths 스코프 유지. |
+| `rules/error-handling.md` | 템플릿 복사 후 TODO를 계획서 에러 전략으로 채움. AppError 구조·에러 7종은 유지. |
+| `rules/testing.md` | 템플릿 복사 후 프로젝트 테스트 도구·mock 대상으로 보강. 에러 7종 테스트는 유지. |
+
+Skills (능동적 워크플로우 — Claude 자동 발견):
+
+| 파일 | 커스터마이징 |
+|------|------------|
+| `skills/project-directory/SKILL.md` | 템플릿 복사 후 TODO를 실제 프로젝트 디렉토리 구조로 채움. |
+| `skills/easy-refactoring/SKILL.md` | 그대로 복사. |
+| `skills/skill-discovery/SKILL.md` | 그대로 복사. |
+
+Settings/Commands/Hooks/Agents:
+
 | 파일 | 커스터마이징 |
 |------|------------|
 | `settings.json` | PKG_MANAGER 기반 권한, pre-commit hook 명령어 |
@@ -92,13 +111,6 @@ CLAUDE.md 생성 핵심 규칙:
 | `hooks/session-start.sh` | 그대로 복사 |
 | `hooks/edit-monitor.sh` | 그대로 복사 |
 | `hooks/pre-commit-check.sh` | {{TYPECHECK_CMD}}, {{LINT_CMD}}, {{TEST_CMD}} 치환 |
-| `skills/error-handling/SKILL.md` | 템플릿 복사 후 TODO를 계획서 에러 전략으로 채움. AppError 구조·에러 7종은 유지. |
-| `skills/security/SKILL.md` | 템플릿 복사 후 TODO를 계획서 보안/인증 요구사항으로 채움. |
-| `skills/testing/SKILL.md` | 템플릿 복사 후 프로젝트 테스트 도구·mock 대상으로 보강. 에러 7종 테스트는 유지. |
-| `skills/conventions/SKILL.md` | 그대로 복사. 프로젝트 추가 컨벤션 있으면 추가. |
-| `skills/project-directory/SKILL.md` | 템플릿 복사 후 TODO를 실제 프로젝트 디렉토리 구조로 채움. |
-| `skills/easy-refactoring/SKILL.md` | 그대로 복사. |
-| `skills/skill-discovery/SKILL.md` | 그대로 복사. |
 | `agents/test-runner.md` | {{TEST_CMD}} 치환 |
 | `agents/code-reviewer.md` | 그대로 복사 |
 | `agents/debugger.md` | 그대로 복사 |
@@ -109,7 +121,9 @@ CLAUDE.md 생성 핵심 규칙:
 
 | 파일 | 커스터마이징 |
 |------|------------|
-| `skills/design-rules/SKILL.md` | 템플릿 복사 후 TODO를 프로젝트 팔레트·다크모드·컴포넌트 구조로 채움. AI 디자인 키워드는 프로젝트에 맞게 1개씩 선택. |
+| `rules/frontend/react.md` | 템플릿 복사 후 프로젝트 컴포넌트 구조·도메인 폴더로 채움. |
+| `rules/frontend/styles.md` | 템플릿 복사 후 프로젝트 디자인 토큰으로 채움. |
+| `skills/design-rules/SKILL.md` | 템플릿 복사 후 TODO를 프로젝트 팔레트·다크모드로 채움. AI 디자인 키워드는 프로젝트에 맞게 1개씩 선택. |
 | `skills/ui-ux-pro-max/` | 외부 스킬 설치. 아래 명령어 실행: |
 
 ```bash
@@ -117,6 +131,12 @@ git clone --depth 1 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git 
 cp -r /tmp/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
 rm -rf /tmp/ui-ux-pro-max-skill
 ```
+
+**조건부 생성 (HAS_BACKEND=true + DB 사용):**
+
+| 파일 | 커스터마이징 |
+|------|------------|
+| `rules/database.md` | ORM 감지 결과 기반으로 채움. paths 스코프를 프로젝트 DB 경로로 조정. |
 
 **조건부 생성 (의존성 주의사항 있을 때):**
 
@@ -145,6 +165,33 @@ rm -rf /tmp/ui-ux-pro-max-skill
 | `commands/worktree.md` | 병렬 작업 시 worktree 생성·정리 가이드. |
 | `skills/agent-teams/SKILL.md` | 팀 구성 가이드: TeamCreate 사용법, 태스크 분배 패턴, worktree 필수 규칙, 실험 기능 활성화 방법. |
 
+### Step 3.5: .mcp.json 생성
+
+계획서 3번 "MCP 서버 선정" 섹션에 확정된 `.mcp.json`이 있으면 그대로 사용한다.
+없으면 스택 분석 결과와 계획서의 외부 서비스 목록을 기반으로 생성한다.
+
+**형식:**
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "npx",
+      "args": ["-y", "package-name"],
+      "env": {
+        "API_KEY": "${API_KEY}"
+      }
+    }
+  }
+}
+```
+
+**생성 규칙:**
+- 계획서에 확정된 `.mcp.json`이 있으면 그대로 복사 (가장 우선)
+- API 키 등 시크릿은 반드시 `${ENV_VAR}` 형식 사용 (하드코딩 절대 금지)
+- stdio 타입: `"command"`, `"args"` 구조
+- HTTP 타입: `"type": "http"`, `"url"` 구조
+- 계획서에 MCP 서버가 없으면 `.mcp.json` 생성 생략
+
 ### Step 4: 검증
 
 ```bash
@@ -156,9 +203,11 @@ bash scripts/validate-env.sh
 - CLAUDE.md 존재 여부 및 80줄 이하 확인
 - 치환되지 않은 `{{변수}}` 잔존 여부
 - TODO/FIXME/Placeholder 잔존 여부 (모든 생성 파일 대상)
+- 필수 `.claude/rules/` 파일 존재 + frontmatter 확인
 - 필수 `.claude/skills/` 디렉토리에 SKILL.md 존재 확인
 - Claude가 이미 아는 패턴 경고 (⚠️ 경고만, 에러 아님)
 - settings.json JSON 유효성
+- .mcp.json JSON 유효성 + 하드코딩 시크릿 감지 (있을 때만)
 - Hook 스크립트 실행 권한
 
 검증 실패 시 → 문제 수정 → 검증 재실행.
@@ -213,7 +262,7 @@ bash scripts/validate-env.sh
 
 ### CLAUDE.md가 80줄을 초과할 때
 원인: 규칙이 너무 많이 인라인됨.
-해결: 상세 규칙을 .claude/skills/의 별도 SKILL.md로 이동.
+해결: 수동적 규칙은 `.claude/rules/`로, 능동적 워크플로우는 `.claude/skills/`로 이동.
 판단 기준: "이 줄을 지우면 Claude가 실수하는가?" 아니면 → 삭제 또는 이동.
 
 ### validate-setup.sh에서 "Claude가 이미 아는 내용" 경고가 뜰 때

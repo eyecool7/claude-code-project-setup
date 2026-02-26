@@ -1,27 +1,18 @@
 # claude-code-project-setup
 
-Automated Claude Code project setup skill. Generate CLAUDE.md + skills + agents + hooks from a single project plan.
+Automated Claude Code project setup skill. Generate a refined project plan from a single project description, then produce tailored CLAUDE.md + rules + skills + agents + mcps + hooks based on that plan.
 
-## Overview
-
-| Step | What | Where | Reference |
-|------|------|-------|-----------|
-| **Step 1** | Write project plan | claude.ai chat | `references/project-plan.md` |
-| **Step 2** | Refine project plan | Claude Code (Plan mode) | `references/plan-mode-prompt.md` |
-| **Step 3** | Install skill | Local machine | (Installation below) |
-| **Step 4** | Run project setup | Claude Code | `references/setup-prompt.md` |
-| **Step 5** | Start development | Claude Code | — |
+| Step | Where | How |
+|------|-------|-----|
+| **Step 1** Write plan | claude.ai | Fill in Project Overview in `claude-ai-project-plan-prompt.md`, send entire prompt → Claude interviews → save as **project-plan.md** |
+| **Step 2** Refine plan | Claude Code (Plan mode) | Enter `claude-code-plan-mode-prompt.md` prompt → deep technical interview refines **project-plan.md** |
+| **Step 3** Install skill | Local machine | Clone this repo → copy needed files ([install↓](#step-3-install-skill--local-machine)) |
+| **Step 4** Run setup | Claude Code | Enter `setup-prompt.md` prompt → generates CLAUDE.md + .claude/ + .mcp.json |
+| **Step 5** Start dev | Claude Code | `/clear` → `Start project development` |
 
 ---
 
-## Step 1: Write Project Plan — claude.ai Chat
-
-Copy the contents of `references/project-plan.md`. Fill in the **Project Overview** section at the top and send.
-
-Claude conducts an interview to complete a detailed project plan.
-Save the file as **project-plan.md** and place it in your project root.
-
-### What the Plan Covers
+### What the Plan Covers (Step 1)
 
 | Section | Contents | Required |
 |---------|----------|----------|
@@ -31,14 +22,6 @@ Save the file as **project-plan.md** and place it in your project root.
 | 4. Implementation Design | Tech stack, agent structure, skill list, error strategy, dependencies | ✅ Required |
 | 5. Technical Decisions | UI tools, data flow, URL structure, external services | ⚪ Optional |
 | 6. Implementation Order | Phase-by-phase dependency roadmap | ✅ Required |
-
----
-
-## Step 2: Refine Project Plan — Claude Code (Plan mode)
-
-Open your project folder in Claude Code and enter the prompt from `references/plan-mode-prompt.md`.
-
-Claude Code reads the plan from Step 1 and conducts a deep technical interview — reviewing implementation approaches, trade-offs, and concerns to strengthen the plan.
 
 ---
 
@@ -84,8 +67,8 @@ my-project/
 ├── SKILL.md                     ← Setup instructions for Claude Code
 ├── references/
 │   ├── claude-md-template.md    ← Template for CLAUDE.md generation
-│   ├── project-plan.md          ← Planning prompt
-│   ├── plan-mode-prompt.md      ← Plan mode interview prompt
+│   ├── claude-ai-project-plan-prompt.md    ← Planning prompt
+│   ├── claude-code-plan-mode-prompt.md    ← Plan mode interview prompt
 │   └── setup-prompt.md          ← Setup prompt
 ├── scripts/
 │   ├── analyze-project.sh       ← Project analysis automation
@@ -102,16 +85,20 @@ my-project/
 │   │   ├── session-start.sh     ← Auto-run on session start
 │   │   ├── edit-monitor.sh      ← Repeated edit detection (hint)
 │   │   └── pre-commit-check.sh  ← ⚠️ Still has {{variables}}
-│   ├── skills/                  ← ⚠️ Still TODO/{{variable}} templates
-│   │   ├── conventions/SKILL.md
+│   ├── rules/                   ← ⚠️ Still TODO templates (passive rules)
+│   │   ├── conventions.md       ← Always loaded
+│   │   ├── security.md          ← Path-scoped (api, auth, middleware)
+│   │   ├── error-handling.md    ← Path-scoped (services, api)
+│   │   ├── testing.md           ← Path-scoped (test/spec files)
+│   │   ├── frontend/react.md    ← (Frontend) path-scoped (tsx, components)
+│   │   ├── frontend/styles.md   ← (Frontend) path-scoped (css, scss)
+│   │   └── database.md          ← (Backend+DB) path-scoped (db, prisma)
+│   ├── skills/                  ← ⚠️ Still TODO/{{variable}} templates (active workflows)
 │   │   ├── dependencies/SKILL.md
 │   │   ├── design-rules/SKILL.md
 │   │   ├── easy-refactoring/SKILL.md
-│   │   ├── error-handling/SKILL.md
 │   │   ├── project-directory/SKILL.md
-│   │   ├── security/SKILL.md
-│   │   ├── skill-discovery/SKILL.md
-│   │   └── testing/SKILL.md
+│   │   └── skill-discovery/SKILL.md
 │   ├── agents/
 │   │   ├── test-runner.md       ← ⚠️ {{TEST_CMD}} etc. still templated
 │   │   ├── code-reviewer.md
@@ -129,24 +116,23 @@ my-project/
 
 ---
 
-## Step 4: Run Project Setup — Claude Code
-
-Open your project folder in Claude Code and enter the prompt from `references/setup-prompt.md`.
-
-### What Happens in Step 4
+## Step 4: What Happens During Setup
 
 | File | Change |
 |------|--------|
 | **CLAUDE.md** | ⭐ **Created** — Based on plan, ~55 lines |
-| .claude/skills/error-handling | 📝 **TODOs filled** — Based on plan's error strategy |
-| .claude/skills/security | 📝 **TODOs filled** — Based on plan's auth/security model |
-| .claude/skills/testing | 📝 **TODOs filled** — Project test tools & mock targets |
+| .claude/rules/error-handling | 📝 **TODOs filled** — Based on plan's error strategy |
+| .claude/rules/security | 📝 **TODOs filled** — Based on plan's auth/security model |
+| .claude/rules/testing | 📝 **TODOs filled** — Project test tools & mock targets |
+| .claude/rules/conventions | 📝 As-is (additions if project has extra conventions) |
+| .claude/rules/frontend/* | 📝 **TODOs filled** — Frontend projects only |
+| .claude/rules/database | 📝 **TODOs filled** — Backend+DB projects only |
 | .claude/skills/project-directory | 📝 **TODOs filled** — Actual directory structure |
-| .claude/skills/conventions | 📝 As-is (additions if project has extra conventions) |
 | .claude/skills/easy-refactoring | 📝 As-is |
 | .claude/skills/skill-discovery | 📝 As-is |
 | .claude/skills/design-rules | 📝 **TODOs filled** — Frontend projects only |
 | .claude/skills/dependencies | 📝 **TODOs filled** — Only when dependency gotchas exist |
+| **.mcp.json** | ⭐ **Created** — Based on plan's MCP servers (skipped if none) |
 | .claude/agents/test-runner | 📝 **Modified** — {{TEST_CMD}} substituted |
 | .claude/hooks/pre-commit-check.sh | 📝 **Modified** — Project validation commands |
 | .claude/commands/check.md | 📝 **Modified** — Package manager commands |
@@ -159,21 +145,7 @@ Open your project folder in Claude Code and enter the prompt from `references/se
 
 ---
 
-## Step 5: Start Development — Claude Code
-
-Reset the conversation to prevent setup context from contaminating development:
-
-```
-/clear
-```
-
-Then:
-
-```
-Start project development
-```
-
-### Folder State After Step 5
+## Folder State After Step 5
 
 ```
 my-project/
@@ -181,15 +153,18 @@ my-project/
 ├── .claude/
 │   ├── commands/ (3)            ← /review, /check, /commit-push-pr
 │   ├── hooks/ (3)               ← session-start, edit-monitor, pre-commit-check
-│   ├── skills/ (7-9)            ← ⭐ Auto-discovered by Claude. Loaded when relevant.
-│   │   ├── conventions/         ← Always: naming, import order, type rules
-│   │   ├── error-handling/      ← Always: when writing error handling code
-│   │   ├── security/            ← Always: when writing auth/security code
-│   │   ├── testing/             ← Always: when writing tests
+│   ├── rules/ (4-7)             ← ⭐ Auto-loaded. Path-scoped to relevant files.
+│   │   ├── conventions.md       ← Always loaded: naming, import, type rules
+│   │   ├── security.md          ← Auto-loaded for api/auth files
+│   │   ├── error-handling.md    ← Auto-loaded for services/api files
+│   │   ├── testing.md           ← Auto-loaded for test/spec files
+│   │   ├── frontend/            ← (Frontend) auto-loaded for tsx/css files
+│   │   └── database.md          ← (Backend+DB) auto-loaded for db files
+│   ├── skills/ (3-5)            ← ⭐ Auto-discovered by Claude. Loaded when relevant.
 │   │   ├── project-directory/   ← Always: when deciding file/folder placement
 │   │   ├── easy-refactoring/    ← Always: when performing refactoring
 │   │   ├── skill-discovery/     ← Always: auto-search when external skills needed
-│   │   ├── design-rules/        ← (Frontend) when doing UI/styling work
+│   │   ├── design-rules/        ← (Frontend) AI design keyword workflow
 │   │   └── dependencies/        ← (Gotcha) when installing/configuring packages
 │   ├── agents/ (3)              ← ⭐ Auto-delegated when needed. Independent context.
 │   │   ├── test-runner.md
@@ -207,7 +182,8 @@ my-project/
 - `/commit-push-pr` — Commit → push → create PR
 
 **Auto-activated:**
-- **Skills (7-9)** — Related rules auto-load when writing error/security/test/design code
+- **Rules (4-7)** — Error/security/test/convention rules auto-load when working on matching files
+- **Skills (3-5)** — File placement, refactoring, design workflows auto-discovered when relevant
 - **Agents (3)** — Complex testing/review/debugging delegated to dedicated agents in independent context
 - **Lessons** — Session alerts when mistake records accumulate, preventing repeated errors
 - **Skill Discovery** — Auto-search and suggest external skills when needed (user confirmation before install)

@@ -1,11 +1,14 @@
-# 프로젝트 계획서 작성 프롬프트
+# 프로젝트 계획서 작성 방법
+이 문서는 사용자가 claude.ai 채팅창에서 바로 사용 가능한 '프로젝트 계획서 작성 프롬프트'를 제공하고 사용 방법을 설명한다.
 
-> 이 프롬프트를 Claude에게 주고, 대화를 통해 **통합 프로젝트 계획서**를 완성한다.
-> 완성된 계획서는 project-setup 스킬의 입력으로 사용된다.
-> 아래의 프로젝트 개요 내용을 채우고 전체 프롬프트를 복사하여 Claude 에게 전달한다.
+## 사용 방법
+>`references/claude-ai-project-plan-prompt.md`를 열고 상단의 **프로젝트 이름과 프로젝트 개요**를 먼저 채운다.
+> 프롬프트 전체를 claude.ai 채팅창에 전달하면, Claude가 인터뷰를 통해 디테일한 프로젝트 계획서를 완성한다.
+> 완성된 계획서를 **project-plan.md**로 저장하고 프로젝트 폴더 루트에 넣는다.
 
 ---
 
+# 프로젝트 계획서 작성 프롬프트 (아래 전체를 claude.ai 채팅창에 전달)
 나는 [프로젝트 이름]을 만들려고 해. 대략의 프로젝트 개요는 다음과 같아.
 
 ## 프로젝트 개요
@@ -15,10 +18,8 @@
 
 ## 최종 산출물
 
-**1개의 md 파일** — 제품 정의부터 구현 설계까지 담긴 통합 계획서.
-이 문서는 Claude Code project-setup 스킬의 입력으로 사용된다.
-
----
+1개의 md 파일 **project-plan.md** — 제품 정의부터 구현 설계까지 담긴 통합 계획서.
+이 문서는 claude-code-project-setup 스킬의 입력으로 사용된다.
 
 ## 계획서에 포함될 내용
 
@@ -125,6 +126,7 @@ git clone --depth 1 https://github.com/johunsang/vive-md.git /tmp/vive-md
 ```bash
 git clone --depth 1 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git /tmp/ui-ux-pro-max-skill
 cp -r /tmp/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max .claude/skills/
+rm -rf /tmp/ui-ux-pro-max-skill
 ```
 
 산출물: 기능별 스킬 검색 결과 테이블 + 설치할 스킬 목록 + 설치 명령어

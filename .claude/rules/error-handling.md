@@ -1,7 +1,10 @@
 ---
-name: error-handling
-description: 에러 처리 코드 작성, try-catch 블록, API 에러 응답, 외부 서비스 실패 fallback 로직 구현 시 사용.
-user-invocable: false
+paths:
+  - "src/services/**"
+  - "src/api/**"
+  - "src/middleware/**"
+  - "app/api/**"
+  - "src/lib/**"
 ---
 
 # 에러 처리 규칙
@@ -69,4 +72,4 @@ requestId, userId, path, errorCode, stack (서버 로그에만)
 
 ## 테스트
 
-에러 핸들링 테스트 상세 → `testing` skill 참조 (에러 7종 테스트 포함)
+에러 핸들링 테스트 상세 → `.claude/rules/testing.md` 참조 (에러 7종 테스트 포함)

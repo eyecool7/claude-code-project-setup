@@ -1,7 +1,9 @@
 ---
-name: testing
-description: 테스트 작성, 테스트 전략 결정, 새 기능·버그 수정의 테스트 커버리지 리뷰 시 사용.
-user-invocable: false
+paths:
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "tests/**"
+  - "__tests__/**"
 ---
 
 # 테스트 규칙
@@ -17,7 +19,7 @@ user-invocable: false
 - API 엔드포인트 전체 (요청 → 응답 사이클)
 - DB 쿼리 → 테스트 DB 사용 (프로덕션 DB 접근 금지)
 
-### 에러 7종 전용 테스트 (error-handling skill에서 위임)
+### 에러 7종 전용 테스트 (error-handling rule 연동)
 각 에러 코드별 최소 1개 테스트 케이스:
 - VALIDATION_ERROR: 잘못된 입력
 - AUTH_FAILED: 인증 실패
