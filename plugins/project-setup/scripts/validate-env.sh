@@ -48,18 +48,18 @@ else
 
   # --- 3. 값에 감싸진 따옴표 감지 ---
   # KEY="value" 형태에서 쉘이 따옴표를 값에 포함시키는 문제
-  QUOTE_ISSUES=$(grep -nE "^[A-Za-z_]+=(['\"])[^'\"]*\1\s*$" "$ENV_FOUND" 2>/dev/null | grep -vE "^[A-Za-z_]+=''" | grep -vE '^[A-Za-z_]+=""' | wc -l)
+  QUOTE_ISSUES=$(grep -nE "^[A-Za-z_][A-Za-z0-9_]*=(['\"])[^'\"]*\1\s*$" "$ENV_FOUND" 2>/dev/null | grep -vE "^[A-Za-z_][A-Za-z0-9_]*=''" | grep -vE '^[A-Za-z_][A-Za-z0-9_]*=""' | wc -l)
   # 더 정확한 감지: 값이 따옴표로 시작하고 끝나되 내용에 공백이 없는 경우
-  SUSPICIOUS_QUOTES=$(grep -nE '^[A-Za-z_]+="[^"]*"' "$ENV_FOUND" 2>/dev/null | wc -l)
+  SUSPICIOUS_QUOTES=$(grep -nE '^[A-Za-z_][A-Za-z0-9_]*="[^"]*"' "$ENV_FOUND" 2>/dev/null | wc -l)
   if [ "$SUSPICIOUS_QUOTES" -gt 0 ]; then
     echo "⚠️ 따옴표로 감싸진 값 ${SUSPICIOUS_QUOTES}건 — Docker/Vercel에서 따옴표가 값에 포함될 수 있음:"
-    grep -nE '^[A-Za-z_]+="[^"]*"' "$ENV_FOUND" | sed 's/=.*/=***/' | head -3
+    grep -nE '^[A-Za-z_][A-Za-z0-9_]*="[^"]*"' "$ENV_FOUND" | sed 's/=.*/=***/' | head -3
     echo "   → 대부분의 경우 따옴표 제거가 안전: KEY=value (공백 없으면)"
     WARNINGS=$((WARNINGS + 1))
   fi
 
   # --- 4. 빈 값 감지 ---
-  EMPTY_KEYS=$(grep -nE '^[A-Za-z_]+=\s*$' "$ENV_FOUND" 2>/dev/null | sed 's/=.*//')
+  EMPTY_KEYS=$(grep -nE '^[A-Za-z_][A-Za-z0-9_]*=\s*$' "$ENV_FOUND" 2>/dev/null | sed 's/=.*//')
   if [ -n "$EMPTY_KEYS" ]; then
     EMPTY_COUNT=$(echo "$EMPTY_KEYS" | wc -l)
     echo "⚠️ 빈 값 ${EMPTY_COUNT}건:"
@@ -68,7 +68,7 @@ else
   fi
 
   # --- 5. 중복 키 감지 ---
-  DUPES=$(grep -oE '^[A-Za-z_]+=' "$ENV_FOUND" 2>/dev/null | sort | uniq -d)
+  DUPES=$(grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' "$ENV_FOUND" 2>/dev/null | sort | uniq -d)
   if [ -n "$DUPES" ]; then
     echo "❌ 중복 키 발견 (마지막 값만 적용됨):"
     echo "$DUPES"

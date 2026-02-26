@@ -6,6 +6,12 @@
 # stdin에서 JSON 입력 읽기
 INPUT=$(cat)
 
+# jq 확인
+if ! command -v jq &>/dev/null; then
+  echo "⚠️ jq가 설치되지 않아 pre-commit 검증을 건너뜁니다. 설치: brew install jq"
+  exit 0
+fi
+
 # Bash 명령어 추출
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
 

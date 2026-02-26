@@ -7,6 +7,12 @@ mkdir -p "$(dirname "$EDIT_LOG")"
 
 # stdin에서 파일 경로 추출
 INPUT=$(cat)
+
+# jq 확인
+if ! command -v jq &>/dev/null; then
+  exit 0
+fi
+
 CURRENT_FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
 
 # 파일 경로가 없으면 종료

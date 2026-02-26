@@ -17,7 +17,21 @@ description: 프로젝트 계획서(project-plan.md) 기반으로 CLAUDE.md + .c
 ```bash
 PLUGIN_ROOT=$(cat /tmp/.project-setup-root 2>/dev/null)
 if [ -z "$PLUGIN_ROOT" ]; then
-  echo "❌ 플러그인 루트를 찾을 수 없습니다. Claude Code를 재시작하세요."
+  # fallback: CLAUDE_PLUGIN_ROOT 환경변수 직접 확인
+  PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-}"
+fi
+if [ -z "$PLUGIN_ROOT" ]; then
+  # fallback: 알려진 설치 경로에서 탐색
+  for CANDIDATE in ~/.claude/plugins/project-setup ./plugins/project-setup; do
+    if [ -f "$CANDIDATE/.claude-plugin/plugin.json" ]; then
+      PLUGIN_ROOT="$CANDIDATE"
+      break
+    fi
+  done
+fi
+if [ -z "$PLUGIN_ROOT" ]; then
+  echo "❌ 플러그인 루트를 찾을 수 없습니다."
+  echo "   → Claude Code를 재시작하거나, 플러그인 설치 경로를 확인하세요."
   exit 1
 fi
 echo "✅ 플러그인 경로: $PLUGIN_ROOT"

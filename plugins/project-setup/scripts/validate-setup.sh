@@ -36,7 +36,7 @@ else
 
   # --- 3a. TODO/Placeholder 잔존 체크 ---
   TODO_COUNT=0
-  for CHECK_FILE in "$ROOT/CLAUDE.md" "$ROOT"/.claude/rules/*.md "$ROOT"/.claude/rules/**/*.md "$ROOT"/.claude/skills/*/SKILL.md "$ROOT"/.claude/agents/*.md "$ROOT"/.claude/hooks/*.sh "$ROOT"/.claude/commands/*.md; do
+  for CHECK_FILE in "$ROOT/CLAUDE.md" $(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null) $(find "$ROOT/.claude/skills" -name "SKILL.md" 2>/dev/null) "$ROOT"/.claude/agents/*.md "$ROOT"/.claude/hooks/*.sh "$ROOT"/.claude/commands/*.md; do
     if [ -f "$CHECK_FILE" ]; then
       FOUND=0
       FOUND=$(grep -ciE '(TODO|FIXME|PLACEHOLDER|여기에 작성|여기를 채)' "$CHECK_FILE" 2>/dev/null) || true
@@ -73,7 +73,7 @@ else
 
   # --- 3b-2. Rules 검증 ---
   RULE_COUNT=0
-  for RULE_FILE in "$ROOT"/.claude/rules/*.md "$ROOT"/.claude/rules/**/*.md; do
+  for RULE_FILE in $(find "$ROOT/.claude/rules" -name "*.md" 2>/dev/null); do
     if [ -f "$RULE_FILE" ]; then
       RULE_COUNT=$((RULE_COUNT + 1))
       # paths frontmatter가 있으면 YAML 유효성 기본 체크
