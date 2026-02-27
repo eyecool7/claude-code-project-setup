@@ -20,21 +20,24 @@
 
 ## 설치
 
-### 플러그인 마켓플레이스 (권장)
+### 마켓플레이스 (권장)
 
-```bash
-# 마켓플레이스에서 설치
-claude plugin install claude-code-project-setup
+Claude Code 안에서 실행:
+
+```
+/plugin marketplace add eyecool7/claude-code-project-setup
+/plugin install project-setup@claude-code-project-setup
 ```
 
 ### 수동 설치
 
 ```bash
 # 이 레포를 클론
-git clone https://github.com/johunsang/claude-code-project-setup.git
+git clone https://github.com/eyecool7/claude-code-project-setup.git
 
-# 플러그인으로 로컬 설치
-claude plugin install ./claude-code-project-setup
+# Claude Code 안에서 로컬 마켓플레이스로 추가
+/plugin marketplace add ./claude-code-project-setup
+/plugin install project-setup@claude-code-project-setup
 ```
 
 ---

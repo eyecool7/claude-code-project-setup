@@ -20,21 +20,24 @@ Stop wasting context on copy-pasted generic templates. This plugin refines your 
 
 ## Installation
 
-### Plugin Marketplace (Recommended)
+### Marketplace (Recommended)
 
-```bash
-# Install from marketplace
-claude plugin install claude-code-project-setup
+Run inside Claude Code:
+
+```
+/plugin marketplace add eyecool7/claude-code-project-setup
+/plugin install project-setup@claude-code-project-setup
 ```
 
 ### Manual Install
 
 ```bash
 # Clone this repo
-git clone https://github.com/johunsang/claude-code-project-setup.git
+git clone https://github.com/eyecool7/claude-code-project-setup.git
 
-# Install as local plugin
-claude plugin install ./claude-code-project-setup
+# Add as local marketplace inside Claude Code
+/plugin marketplace add ./claude-code-project-setup
+/plugin install project-setup@claude-code-project-setup
 ```
 
 ---
