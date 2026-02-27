@@ -11,7 +11,7 @@
     {
       "name": "project-setup",
       "source": "./plugins/project-setup",
-      "description": "프로젝트 계획서 기반 Claude Code 설정 자동 생성. 계획서 작성(/plan) → 고도화(/refine) → 셋업(/setup) 3단계 워크플로우.",
+      "description": "프로젝트 계획서 기반 Claude Code 설정 자동 생성. 계획서 작성(/project-setup:plan) → 고도화(/project-setup:refine) → 셋업(/project-setup:setup) 3단계 워크플로우.",
       "version": "1.0.0",
       "author": {
         "name": "eyecool7"
