@@ -238,8 +238,6 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 ### Step 5: 완료 요약
 
-셋업 완료 후 git init + 첫 커밋을 진행한다.
-
 사용자에게 다음을 전달한다:
 
 ---
@@ -248,7 +246,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 [세팅 내용을 간략하게 요약 — 생성된 파일 수, CLAUDE.md 줄 수, 에이전트 Tier, 호환성 주의사항 등]
 
-이제 Claude Code 현재 창에서 `/clear` 로 컨텍스트를 비우고 `프로젝트 개발을 시작해` 명령어로 프로젝트 구축을 시작합니다.
+이제 Claude Code 현재 창에서 `/clear` 로 컨텍스트를 비우거나 새창을 열어 프로젝트를 만들기 시작합니다. `프로젝트 구축을 시작해` 를 입력하면 `project-plan.md` 계획서를 토대로 프로젝트 구축이 시작됩니다.
 
 ---
 
