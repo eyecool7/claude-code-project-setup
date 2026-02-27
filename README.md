@@ -6,6 +6,25 @@
 
 무작정 복붙한 범용 템플릿으로 컨텍스트 낭비하는 건 이제 그만. 2단계 인터뷰로 프로젝트 계획서를 먼저 고도화한 뒤, 그 계획서에 기반해 CLAUDE.md(55줄) + path-scoped rules + auto-discovered skills + agents + hooks + MCP까지 18개 이상의 설정 파일을 프로젝트에 맞게 생성한다.
 
+## 설치
+
+### 마켓플레이스 (권장)
+
+```bash
+claude plugin marketplace add eyecool7/claude-code-project-setup
+claude plugin install project-setup@claude-code-project-setup
+```
+
+### 수동 설치
+
+```bash
+git clone https://github.com/eyecool7/claude-code-project-setup.git
+claude plugin marketplace add ./claude-code-project-setup
+claude plugin install project-setup@claude-code-project-setup
+```
+
+---
+
 ## 사용 방법
 
 ### Step 1. 계획서 작성
@@ -27,25 +46,6 @@
 **사용자** : `/clear` 또는 새창 → `프로젝트 구축을 시작해` 입력 → claude code 가 `project-plan.md` 계획서를 토대로 프로젝트 구축 시작
 
 > **권장:** Step 1~2 (기획)과 Step 3 (세팅)은 별도 세션에서 실행. 기획 대화의 수정 히스토리가 세팅 컨텍스트를 오염시키므로 반드시 분리.
-
----
-
-## 설치
-
-### 마켓플레이스 (권장)
-
-```bash
-claude plugin marketplace add eyecool7/claude-code-project-setup
-claude plugin install project-setup@claude-code-project-setup
-```
-
-### 수동 설치
-
-```bash
-git clone https://github.com/eyecool7/claude-code-project-setup.git
-claude plugin marketplace add ./claude-code-project-setup
-claude plugin install project-setup@claude-code-project-setup
-```
 
 ---
 
