@@ -2,42 +2,24 @@
 
 [English](README.en.md)
 
-커맨드 3개로 Claude Code 프로젝트 세팅을 끝내주는 플러그인.
+Claude Code 프로젝트 세팅 자동화 스킬. 프로젝트 설명 한줄로 고도화된 계획서를 생성하고, 그 계획서를 바탕으로 맞춤형 CLAUDE.md + rules + skills + agents + mcps + hooks를 생성한다.
 
-무작정 복붙한 범용 템플릿으로 컨텍스트 낭비하는 건 이제 그만. 2단계 인터뷰로 프로젝트 계획서를 먼저 고도화한 뒤, 그 계획서에 기반해 CLAUDE.md(55줄) + path-scoped rules + auto-discovered skills + agents + hooks + MCP까지 18개 이상의 설정 파일을 프로젝트에 맞게 생성한다.
-
-## 사용 방법
-
-| 순서 | 커맨드 | 설명 |
+| 순서 | 어디서 | 방법 |
 |------|--------|------|
-| **1** | `/project-setup:plan` | 계획서 작성 프롬프트 출력 → **claude.ai에 붙여넣기** → 인터뷰 → **project-plan.md**를 프로젝트 루트에 저장 |
-| **2** | `/project-setup:refine` | Plan mode에서 계획서 심층 인터뷰 → **project-plan.md** 고도화 |
-| **3** | `/project-setup:setup` | 계획서 기반 CLAUDE.md + .claude/ + .mcp.json 자동 생성 |
-
-> **권장:** Step 1~2 (기획)과 Step 3 (구현)은 별도 세션에서 실행. 기획 대화의 수정 히스토리가 구현 컨텍스트를 오염시키므로 반드시 분리.
-
----
-
-## 설치
-
-### 마켓플레이스 (권장)
-
-```bash
-claude plugin marketplace add eyecool7/claude-code-project-setup
-claude plugin install project-setup@claude-code-project-setup
-```
-
-### 수동 설치
-
-```bash
-git clone https://github.com/eyecool7/claude-code-project-setup.git
-claude plugin marketplace add ./claude-code-project-setup
-claude plugin install project-setup@claude-code-project-setup
-```
+| **Step 1** 계획서 작성 | claude.ai | `claude-ai-project-plan-prompt.md` 통해 **project-plan.md** 생성 |
+| **Step 2** 계획서 고도화 | Claude Code (Plan mode) | `claude-code-plan-mode-prompt.md` 통해 **project-plan.md** 고도화 |
+| **Step 3** 스킬 설치 | 내 컴퓨터 | 이 레포 클론 → 필요 파일 복사 ([설치 방법↓](#step-3-스킬-설치--내-컴퓨터)) |
+| **Step 4** 프로젝트 셋업 | Claude Code | `setup-prompt.md` 통해 CLAUDE.md + .claude/ + .mcp.json 생성 |
+| **Step 5** 개발 시작 | Claude Code | `/clear` → `프로젝트 개발을 시작해` 명령어 입력 |
 
 ---
+## Step 1: 프로젝트 계획서 작성 — claude.ai 채팅창
 
-## 계획서에 포함되는 내용
+`references/claude-ai-project-plan-prompt.md`를 열고 상단의 **프로젝트 이름과 프로젝트 개요**를 먼저 채운다.
+프롬프트 전체를 claude.ai 채팅창에 전달하면, Claude가 인터뷰를 통해 디테일한 프로젝트 계획서를 완성한다.
+완성된 계획서를 **project-plan.md**로 저장하고 프로젝트 폴더 루트에 넣는다.
+
+### 계획서에 포함되는 내용 (Step 1)
 
 | 섹션 | 내용 | 필수 여부 |
 |------|------|----------|
@@ -49,24 +31,134 @@ claude plugin install project-setup@claude-code-project-setup
 | 6. 구현 순서 | Phase별 의존관계 로드맵 | ✅ 필수 |
 
 ---
+## Step 2: 프로젝트 계획서 고도화 — Claude Code (Plan mode)
 
-## 셋업에서 생성되는 것
+Claude Code (Plan mode)에서 프로젝트 폴더를 열고, `references/claude-code-plan-mode-prompt.md`의 프롬프트를 입력한다.
+Claude Code가 `project-plan.md`를 읽고, 구현 방식·트레이드오프·우려 사항 등 기술적 관점에서 심층 인터뷰를 진행하여 계획서의 완성도를 한 단계 더 높인다.
+충분한 인터뷰가 완료되면, 그 결과를 반영해 **완성된 스펙을 동일한 파일에 작성**합니다.
+
+---
+## Step 3: 스킬 설치 — 내 컴퓨터
+
+### 빠른 설치 (git clone)
+
+```bash
+cd my-project  # 프로젝트 폴더로 이동
+
+# 이 레포를 임시로 클론
+git clone https://github.com/YOUR_USERNAME/claude-code-project-setup.git /tmp/setup-skill
+
+# 필요한 파일만 복사
+cp /tmp/setup-skill/SKILL.md .
+cp -r /tmp/setup-skill/.claude .
+cp -r /tmp/setup-skill/references .
+cp -r /tmp/setup-skill/scripts .
+
+# 임시 클론 삭제
+rm -rf /tmp/setup-skill
+```
+
+### 수동 설치 (zip 다운로드)
+
+GitHub에서 zip을 다운로드하고, 아래 파일을 프로젝트 폴더에 복사:
+
+```
+레포 내용물                           →    my-project/ 에 넣기
+───────────────────────────────         ──────────────────
+SKILL.md                          →    my-project/SKILL.md
+.claude/                          →    my-project/.claude/
+references/                       →    my-project/references/
+scripts/                          →    my-project/scripts/
+```
+
+### Step 3 완료 후 폴더 상태
+
+```
+my-project/
+│
+│  ── 세팅 스킬 (세팅 후 삭제됨) ──────────────────────
+├── SKILL.md                     ← Claude Code가 읽는 세팅 지침서
+├── references/
+│   ├── claude-md-template.md    ← CLAUDE.md 생성 시 참조할 틀
+│   ├── claude-ai-project-plan-prompt.md    ← 기획 프롬프트
+│   ├── claude-code-plan-mode-prompt.md    ← Plan mode 인터뷰 프롬프트
+│   └── setup-prompt.md          ← 셋업 프롬프트
+├── scripts/
+│   ├── analyze-project.sh       ← 프로젝트 분석 자동화
+│   ├── validate-env.sh          ← 환경 변수 위생 검사
+│   └── validate-setup.sh        ← 세팅 결과 검증
+│
+│  ── .claude/ (템플릿 상태) ──────────────────────────
+├── .claude/
+│   ├── commands/
+│   │   ├── check.md             ← /check 명령어
+│   │   ├── commit-push-pr.md    ← /commit-push-pr 명령어
+│   │   └── review.md            ← /review 명령어
+│   ├── hooks/
+│   │   ├── session-start.sh     ← 세션 시작 시 자동 실행
+│   │   ├── edit-monitor.sh      ← 반복 수정 감지 (hint)
+│   │   └── pre-commit-check.sh  ← ⚠️ 아직 {{변수}} 상태
+│   ├── rules/                   ← ⚠️ 아직 TODO 템플릿 상태 (수동적 규칙)
+│   │   ├── conventions.md       ← 항상 로드
+│   │   ├── security.md          ← path-scoped (api, auth, middleware)
+│   │   ├── error-handling.md    ← path-scoped (services, api)
+│   │   ├── testing.md           ← path-scoped (test/spec 파일)
+│   │   ├── frontend/react.md    ← (프론트엔드) path-scoped (tsx, components)
+│   │   ├── frontend/styles.md   ← (프론트엔드) path-scoped (css, scss)
+│   │   └── database.md          ← (백엔드+DB) path-scoped (db, prisma)
+│   ├── skills/                  ← ⚠️ 아직 TODO/{{변수}} 템플릿 상태 (능동적 워크플로우)
+│   │   ├── dependencies/SKILL.md
+│   │   ├── design-rules/SKILL.md
+│   │   ├── easy-refactoring/SKILL.md
+│   │   ├── project-directory/SKILL.md
+│   │   └── skill-discovery/SKILL.md
+│   ├── agents/
+│   │   ├── test-runner.md       ← ⚠️ {{TEST_CMD}} 등 변수 상태
+│   │   ├── code-reviewer.md
+│   │   └── debugger.md
+│   ├── lessons.md               ← 빈 템플릿 (개발 중 축적)
+│   └── settings.json
+│
+│  ── 기획 산출물 (Step 1~2에서 작성) ─────────────────
+└── project-plan.md
+│
+│  ── 아직 없는 것 ─────────────────────────────────────
+│  (CLAUDE.md — Step 4에서 생성)
+│  (.git — Step 4에서 초기화)
+```
+
+---
+
+## Step 4: 프로젝트 셋업에서 일어나는 일
 
 | 파일 | 변화 |
 |------|------|
 | **CLAUDE.md** | ⭐ **새로 생성** — 계획서 기반, 55줄 내외 |
-| .claude/rules/ (4-7개) | 📝 **TODO 채워짐** — conventions, security, error-handling, testing + 조건부(frontend, database) |
-| .claude/skills/ (3-5개) | 📝 **TODO 채워짐** — project-directory, easy-refactoring, skill-discovery + 조건부(design-rules, dependencies) |
-| .claude/agents/ (3개) | 📝 **수정됨** — test-runner, code-reviewer, debugger |
-| .claude/commands/ (3개) | 📝 **수정됨** — /check, /review, /commit-push-pr |
-| .claude/hooks/ (3개) | 📝 **수정됨** — session-start, edit-monitor, pre-commit-check |
-| .claude/settings.json | 📝 **수정됨** — 권한/hooks 설정 |
+| .claude/rules/error-handling | 📝 **TODO 채워짐** — 계획서 에러 전략 기반 |
+| .claude/rules/security | 📝 **TODO 채워짐** — 계획서 인증/보안 모델 기반 |
+| .claude/rules/testing | 📝 **TODO 채워짐** — 프로젝트 테스트 도구·mock 대상 |
+| .claude/rules/conventions | 📝 그대로 (추가 컨벤션 있으면 추가) |
+| .claude/rules/frontend/* | 📝 **TODO 채워짐** — 프론트엔드 있을 때만 |
+| .claude/rules/database | 📝 **TODO 채워짐** — 백엔드+DB 있을 때만 |
+| .claude/skills/project-directory | 📝 **TODO 채워짐** — 실제 디렉토리 구조 |
+| .claude/skills/easy-refactoring | 📝 그대로 |
+| .claude/skills/skill-discovery | 📝 그대로 |
+| .claude/skills/design-rules | 📝 **TODO 채워짐** — 프론트엔드 있을 때만 |
+| .claude/skills/dependencies | 📝 **TODO 채워짐** — 의존성 gotcha 있을 때만 |
 | **.mcp.json** | ⭐ **새로 생성** — 계획서 MCP 서버 기반 (없으면 생략) |
+| .claude/agents/test-runner | 📝 **수정됨** — {{TEST_CMD}} 치환 |
+| .claude/hooks/pre-commit-check.sh | 📝 **수정됨** — 프로젝트 검증 명령어로 |
+| .claude/commands/check.md | 📝 **수정됨** — 패키지 매니저 명령어로 |
+| .claude/settings.json | 📝 **수정됨** — 권한/hooks 설정 |
 | .git/ | ⭐ **새로 생성** — git 초기화 + 첫 커밋 |
+| SKILL.md | 🗑️ **삭제됨** |
+| references/ | 🗑️ **삭제됨** |
+| scripts/ | 🗑️ **삭제됨** |
+| README.md | 🗑️ **삭제됨** |
 
 ---
 
-## 셋업 완료 후 프로젝트 상태
+## Step 5 완료 후 폴더 상태
 
 ```
 my-project/
@@ -108,41 +200,6 @@ my-project/
 - **Agents (3개)** — 복잡한 테스트/리뷰/디버깅은 전담 에이전트가 독립 컨텍스트에서 처리
 - **Lessons** — 실수 기록이 쌓이면 세션마다 알림, 같은 실수 방지
 - **Skill Discovery** — 외부 스킬이 필요하면 자동 검색·제안 (설치 전 사용자 확인)
-
----
-
-## 플러그인 구조
-
-```
-claude-code-project-setup/
-├── .claude-plugin/
-│   └── marketplace.json         ← 마켓플레이스 메타데이터
-├── plugins/
-│   └── project-setup/
-│       ├── .claude-plugin/
-│       │   └── plugin.json      ← 플러그인 정의
-│       ├── commands/
-│       │   ├── plan.md          ← /project-setup:plan
-│       │   ├── refine.md        ← /project-setup:refine
-│       │   └── setup.md         ← /project-setup:setup
-│       ├── templates/           ← 생성 시 참조할 템플릿
-│       │   ├── claude-md-template.md
-│       │   ├── rules/
-│       │   ├── skills/
-│       │   ├── agents/
-│       │   ├── commands/
-│       │   ├── hooks/
-│       │   ├── settings.json
-│       │   ├── lessons.md
-│       │   └── decisions.md
-│       └── scripts/             ← 분석/검증 스크립트
-│           ├── analyze-project.sh
-│           ├── validate-env.sh
-│           └── validate-setup.sh
-├── README.md
-├── README.en.md
-└── LICENSE
-```
 
 ---
 
