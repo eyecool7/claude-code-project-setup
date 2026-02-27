@@ -24,7 +24,7 @@
 
 ```bash
 # 마켓플레이스에서 설치
-claude plugin add claude-code-project-setup
+claude plugin install claude-code-project-setup
 ```
 
 ### 수동 설치

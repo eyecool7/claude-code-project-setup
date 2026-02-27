@@ -24,7 +24,7 @@ Stop wasting context on copy-pasted generic templates. This plugin refines your 
 
 ```bash
 # Install from marketplace
-claude plugin add claude-code-project-setup
+claude plugin install claude-code-project-setup
 ```
 
 ### Manual Install
