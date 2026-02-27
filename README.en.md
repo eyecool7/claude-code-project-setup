@@ -64,49 +64,73 @@ claude plugin install project-setup@claude-code-project-setup
 
 ## What Setup Generates
 
-| File | Change |
-|------|--------|
-| **CLAUDE.md** | ⭐ **Created** — Based on plan, ~55 lines |
-| .claude/rules/ (4-7) | 📝 **TODOs filled** — conventions, security, error-handling, testing + conditional (frontend, database) |
-| .claude/skills/ (3-5) | 📝 **TODOs filled** — project-directory, easy-refactoring, skill-discovery + conditional (design-rules, dependencies) |
-| .claude/agents/ (3) | 📝 **Modified** — test-runner, code-reviewer, debugger |
-| .claude/commands/ (3) | 📝 **Modified** — /check, /review, /commit-push-pr |
-| .claude/hooks/ (3) | 📝 **Modified** — session-start, edit-monitor, pre-commit-check |
-| .claude/settings.json | 📝 **Modified** — Permissions/hooks config |
-| **.mcp.json** | ⭐ **Created** — Based on plan's MCP servers (skipped if none) |
-| .git/ | ⭐ **Created** — git init + first commit |
+**Always generated:**
+
+| File | Contents |
+|------|----------|
+| **CLAUDE.md** | Based on plan, ~55 lines |
+| .claude/rules/ (4) | conventions, security, error-handling, testing |
+| .claude/skills/ (3) | project-directory, easy-refactoring, skill-discovery |
+| .claude/agents/ (3) | test-runner, code-reviewer, debugger |
+| .claude/commands/ (3) | /check, /review, /commit-push-pr |
+| .claude/hooks/ (3) | session-start, edit-monitor, pre-commit-check |
+| .claude/decisions.md | Technical decision log template |
+| .claude/lessons.md | Mistake/solution log template |
+| .claude/settings.json | Permissions/hooks config |
+
+**Conditionally generated:**
+
+| File | Condition |
+|------|-----------|
+| .claude/rules/frontend/ | Frontend project |
+| .claude/rules/database.md | Backend + DB |
+| .claude/skills/design-rules/ | Frontend project |
+| .claude/skills/ui-ux-pro-max/ | Frontend project (external skill) |
+| .claude/skills/dependencies/ | Dependency conflicts detected |
+| .claude/skills/{domain-skill}/ | Plan-defined skills |
+| .claude/skills/agent-teams/ | Tier 3 agent teams |
+| **.mcp.json** | MCP servers selected |
 
 ---
 
 ## Project State After Setup
 
+Always-generated base config and conditionally-generated additions based on project characteristics.
+
 ```
 my-project/
-├── CLAUDE.md                    ← ⭐ ~55 lines. Auto-loaded every session.
+├── CLAUDE.md                       ← ⭐ ~55 lines. Auto-loaded every session.
 ├── .claude/
-│   ├── commands/ (3)            ← /review, /check, /commit-push-pr
-│   ├── hooks/ (3)               ← session-start, edit-monitor, pre-commit-check
-│   ├── rules/ (4-7)             ← ⭐ Auto-loaded. Path-scoped to relevant files.
-│   │   ├── conventions.md       ← Always loaded: naming, import, type rules
-│   │   ├── security.md          ← Auto-loaded for api/auth files
-│   │   ├── error-handling.md    ← Auto-loaded for services/api files
-│   │   ├── testing.md           ← Auto-loaded for test/spec files
-│   │   ├── frontend/            ← (Frontend) auto-loaded for tsx/css files
-│   │   └── database.md          ← (Backend+DB) auto-loaded for db files
-│   ├── skills/ (3-5)            ← ⭐ Auto-discovered by Claude. Loaded when relevant.
-│   │   ├── project-directory/   ← Always: when deciding file/folder placement
-│   │   ├── easy-refactoring/    ← Always: when performing refactoring
-│   │   ├── skill-discovery/     ← Always: auto-search when external skills needed
-│   │   ├── design-rules/        ← (Frontend) AI design keyword workflow
-│   │   └── dependencies/        ← (Gotcha) when installing/configuring packages
-│   ├── agents/ (3)              ← ⭐ Auto-delegated when needed. Independent context.
-│   │   ├── test-runner.md
-│   │   ├── code-reviewer.md
-│   │   └── debugger.md
-│   ├── lessons.md               ← Accumulated mistakes/solutions during dev
+│   ├── commands/ (3)               ← /review, /check, /commit-push-pr
+│   ├── hooks/ (3)                  ← session-start, edit-monitor, pre-commit-check
+│   ├── rules/
+│   │   ├── conventions.md          ← Always: naming, import, type rules
+│   │   ├── security.md             ← Always: api/auth files
+│   │   ├── error-handling.md       ← Always: services/api files
+│   │   └── testing.md              ← Always: test/spec files
+│   ├── skills/
+│   │   ├── project-directory/      ← Always: file/folder placement
+│   │   ├── easy-refactoring/       ← Always: refactoring
+│   │   └── skill-discovery/        ← Always: auto-search external skills
+│   ├── agents/
+│   │   ├── test-runner.md          ← Always: test execution
+│   │   ├── code-reviewer.md        ← Always: code review
+│   │   └── debugger.md             ← Always: debugging
+│   ├── decisions.md                ← Technical decision log
+│   ├── lessons.md                  ← Mistake/solution log
 │   └── settings.json
-├── project-plan.md              ← Kept for reference
-└── .git/
+│
+│   ─── Conditionally generated ───
+│
+│   ├── rules/frontend/             ← Frontend project
+│   ├── rules/database.md           ← Backend + DB
+│   ├── skills/design-rules/        ← Frontend project
+│   ├── skills/ui-ux-pro-max/       ← Frontend project (external skill)
+│   ├── skills/dependencies/        ← Dependency conflicts detected
+│   ├── skills/{domain-skill}/      ← Plan-defined skills
+│   └── skills/agent-teams/         ← Tier 3 agent teams
+├── .mcp.json                       ← MCP servers selected
+└── project-plan.md                 ← Kept for reference
 ```
 
 **Useful commands:**
@@ -115,10 +139,10 @@ my-project/
 - `/commit-push-pr` — Commit → push → create PR
 
 **Auto-activated:**
-- **Rules (4-7)** — Error/security/test/convention rules auto-load when working on matching files
-- **Skills (3-5)** — File placement, refactoring, design workflows auto-discovered when relevant
-- **Agents (3)** — Complex testing/review/debugging delegated to dedicated agents in independent context
-- **Lessons** — Session alerts when mistake records accumulate, preventing repeated errors
+- **Rules** — Error/security/test/convention rules auto-load when working on matching files
+- **Skills** — File placement, refactoring, design workflows auto-discovered when relevant
+- **Agents** — Complex testing/review/debugging delegated to dedicated agents in independent context
+- **Decisions/Lessons** — Session alerts when records accumulate, preventing repeated mistakes
 - **Skill Discovery** — Auto-search and suggest external skills when needed (user confirmation before install)
 
 ---

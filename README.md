@@ -74,47 +74,73 @@ claude plugin install project-setup@claude-code-project-setup
 
 ## 셋업에서 생성되는 것
 
-| 파일 | 변화 |
+**항상 생성:**
+
+| 파일 | 내용 |
 |------|------|
-| **CLAUDE.md** | ⭐ **새로 생성** — 계획서 기반, 55줄 내외 |
-| .claude/rules/ (4-7개) | 📝 **TODO 채워짐** — conventions, security, error-handling, testing + 조건부(frontend, database) |
-| .claude/skills/ (3-5개) | 📝 **TODO 채워짐** — project-directory, easy-refactoring, skill-discovery + 조건부(design-rules, dependencies) |
-| .claude/agents/ (3개) | 📝 **수정됨** — test-runner, code-reviewer, debugger |
-| .claude/commands/ (3개) | 📝 **수정됨** — /check, /review, /commit-push-pr |
-| .claude/hooks/ (3개) | 📝 **수정됨** — session-start, edit-monitor, pre-commit-check |
-| .claude/settings.json | 📝 **수정됨** — 권한/hooks 설정 |
-| **.mcp.json** | ⭐ **새로 생성** — 계획서 MCP 서버 기반 (없으면 생략) |
+| **CLAUDE.md** | 계획서 기반, 55줄 내외 |
+| .claude/rules/ (4개) | conventions, security, error-handling, testing |
+| .claude/skills/ (3개) | project-directory, easy-refactoring, skill-discovery |
+| .claude/agents/ (3개) | test-runner, code-reviewer, debugger |
+| .claude/commands/ (3개) | /check, /review, /commit-push-pr |
+| .claude/hooks/ (3개) | session-start, edit-monitor, pre-commit-check |
+| .claude/decisions.md | 기술 결정 기록 템플릿 |
+| .claude/lessons.md | 실수/해결책 기록 템플릿 |
+| .claude/settings.json | 권한/hooks 설정 |
+
+**조건부 생성:**
+
+| 파일 | 조건 |
+|------|------|
+| .claude/rules/frontend/ | 프론트엔드 프로젝트 |
+| .claude/rules/database.md | 백엔드 + DB 사용 |
+| .claude/skills/design-rules/ | 프론트엔드 프로젝트 |
+| .claude/skills/ui-ux-pro-max/ | 프론트엔드 프로젝트 (외부 스킬) |
+| .claude/skills/dependencies/ | 의존성 충돌 감지 시 |
+| .claude/skills/{도메인-스킬}/ | 계획서에 정의된 스킬 |
+| .claude/skills/agent-teams/ | Tier 3 에이전트 팀 |
+| **.mcp.json** | MCP 서버 선정 시 |
 
 ---
 
 ## 셋업 완료 후 프로젝트 상태
 
+항상 생성되는 기본 구성과, 프로젝트 특성에 따라 추가되는 조건부 구성으로 나뉜다.
+
 ```
 my-project/
-├── CLAUDE.md                    ← ⭐ 55줄 내외. 매 세션 자동 로드.
+├── CLAUDE.md                       ← ⭐ 55줄 내외. 매 세션 자동 로드.
 ├── .claude/
-│   ├── commands/ (3)            ← /review, /check, /commit-push-pr
-│   ├── hooks/ (3)               ← session-start, edit-monitor, pre-commit-check
-│   ├── rules/ (4-7)             ← ⭐ 자동 로드. path 매칭으로 관련 파일에만 적용.
-│   │   ├── conventions.md       ← 항상 로드: 네이밍, import, 타입 규칙
-│   │   ├── security.md          ← api/auth 파일 작업 시 자동 로드
-│   │   ├── error-handling.md    ← services/api 파일 작업 시 자동 로드
-│   │   ├── testing.md           ← test/spec 파일 작업 시 자동 로드
-│   │   ├── frontend/            ← (프론트엔드) tsx/css 작업 시 자동 로드
-│   │   └── database.md          ← (백엔드+DB) db 파일 작업 시 자동 로드
-│   ├── skills/ (3-5)            ← ⭐ Claude가 자동 발견. 맥락에 맞으면 로드.
-│   │   ├── project-directory/   ← 항상: 파일/폴더 생성 위치 결정 시
-│   │   ├── easy-refactoring/    ← 항상: 리팩토링 수행 시
-│   │   ├── skill-discovery/     ← 항상: 외부 스킬 필요 시 자동 검색
-│   │   ├── design-rules/        ← (프론트엔드) AI 디자인 키워드 워크플로우
-│   │   └── dependencies/        ← (gotcha) 패키지 설치/설정 시
-│   ├── agents/ (3)              ← ⭐ 필요 시 자동 위임. 독립 컨텍스트.
-│   │   ├── test-runner.md
-│   │   ├── code-reviewer.md
-│   │   └── debugger.md
-│   ├── lessons.md               ← 개발 중 실수/해결책 축적
+│   ├── commands/ (3)               ← /review, /check, /commit-push-pr
+│   ├── hooks/ (3)                  ← session-start, edit-monitor, pre-commit-check
+│   ├── rules/
+│   │   ├── conventions.md          ← 항상: 네이밍, import, 타입 규칙
+│   │   ├── security.md             ← 항상: api/auth 파일 작업 시
+│   │   ├── error-handling.md       ← 항상: services/api 작업 시
+│   │   └── testing.md              ← 항상: test/spec 작업 시
+│   ├── skills/
+│   │   ├── project-directory/      ← 항상: 파일/폴더 위치 결정 시
+│   │   ├── easy-refactoring/       ← 항상: 리팩토링 수행 시
+│   │   └── skill-discovery/        ← 항상: 외부 스킬 필요 시 자동 검색
+│   ├── agents/
+│   │   ├── test-runner.md          ← 항상: 테스트 실행 위임
+│   │   ├── code-reviewer.md        ← 항상: 코드 리뷰 위임
+│   │   └── debugger.md             ← 항상: 디버깅 위임
+│   ├── decisions.md                ← 기술 결정 기록
+│   ├── lessons.md                  ← 실수/해결책 축적
 │   └── settings.json
-└── project-plan.md              ← 참조용 유지
+│
+│   ─── 이하 조건부 생성 ───
+│
+│   ├── rules/frontend/             ← 프론트엔드 프로젝트
+│   ├── rules/database.md           ← 백엔드 + DB 사용
+│   ├── skills/design-rules/        ← 프론트엔드 프로젝트
+│   ├── skills/ui-ux-pro-max/       ← 프론트엔드 프로젝트 (외부 스킬)
+│   ├── skills/dependencies/        ← 의존성 충돌 감지 시
+│   ├── skills/{도메인-스킬}/       ← 계획서에 정의된 스킬
+│   └── skills/agent-teams/         ← Tier 3 에이전트 팀
+├── .mcp.json                       ← MCP 서버 선정 시
+└── project-plan.md                 ← 참조용 유지
 ```
 
 **유용한 명령어:**
@@ -123,10 +149,10 @@ my-project/
 - `/commit-push-pr` — 커밋 → 푸시 → PR 생성
 
 **자동 작동:**
-- **Rules (4-7개)** — 에러/보안/테스트/컨벤션 규칙이 관련 파일 작업 시 자동 로드
-- **Skills (3-5개)** — 파일 배치, 리팩토링, 디자인 등 능동적 워크플로우 자동 발견
-- **Agents (3개)** — 복잡한 테스트/리뷰/디버깅은 전담 에이전트가 독립 컨텍스트에서 처리
-- **Lessons** — 실수 기록이 쌓이면 세션마다 알림, 같은 실수 방지
+- **Rules** — 에러/보안/테스트/컨벤션 규칙이 관련 파일 작업 시 자동 로드
+- **Skills** — 파일 배치, 리팩토링, 디자인 등 능동적 워크플로우 자동 발견
+- **Agents** — 복잡한 테스트/리뷰/디버깅은 전담 에이전트가 독립 컨텍스트에서 처리
+- **Decisions/Lessons** — 기술 결정·실수 기록이 쌓이면 세션마다 알림
 - **Skill Discovery** — 외부 스킬이 필요하면 자동 검색·제안 (설치 전 사용자 확인)
 
 ---
