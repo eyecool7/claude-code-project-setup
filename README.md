@@ -11,16 +11,19 @@
 ### Step 1. 계획서 작성
 
 **커맨드** `/project-setup:plan` : `project-plan-prompt.md`를 프로젝트 루트에 생성
+
 **사용자** : `project-plan-prompt.md` 프롬프트를 **claude.ai**에 붙이기 → 대화를 통해 `project-plan.md` 계획서 완성 → 프로젝트 루트에 저장
 
 ### Step 2. 계획서 고도화
 
 **커맨드** `/project-setup:refine` : `project-refine-prompt.md`를 프로젝트 루트에 생성
+
 **사용자** : `project-refine-prompt.md` 프롬프트를 **claude code**에 붙이기 → 대화를 통해 `project-plan.md` 계획서 고도화 → 저장
 
 ### Step 3. 프로젝트 세팅
 
 **커맨드** `/project-setup:setup` : `project-plan.md` 기반 프로젝트 세팅 (CLAUDE.md + .claude/ + .mcp.json 자동 생성)
+
 **사용자** : `/clear` 또는 새창 → `프로젝트 구축을 시작해` 입력 → `project-plan.md` 계획서를 토대로 프로젝트 구축 시작
 
 > **권장:** Step 1~2 (기획)과 Step 3 (세팅)은 별도 세션에서 실행. 기획 대화의 수정 히스토리가 세팅 컨텍스트를 오염시키므로 반드시 분리.
