@@ -14,12 +14,12 @@
 
 이 플러그인은 이 질문들을 한 방에 해결해 줍니다.
 
-1차 작성 + 2차 고도화로 빈틈 없는 계획서를 완성하고, `/plan`→`/refine`→`/setup` 3단계를 따라가면 CLAUDE.md와 19개 이상의 설정 파일이 프로젝트에 맞게 자동 생성됩니다. 세션 간 맥락 연속, 의존성 충돌 사전 감지, Tier별 확장, 커뮤니티 스킬 자동 검색까지 — 범용 템플릿 복붙으로 컨텍스트 낭비하는 건 이제 그만.
+1차 작성 + 2차 고도화로 빈틈 없는 계획서를 완성하고, `/plan`→`/refine`→`/setup`→`/build` 4단계를 따라가면 CLAUDE.md와 19개 이상의 설정 파일이 프로젝트에 맞게 자동 생성되고, 매 세션마다 Phase 기반 구축 킥오프가 제공됩니다. 세션 간 맥락 연속, 의존성 충돌 사전 감지, Tier별 확장, 커뮤니티 스킬 자동 검색까지 — 범용 템플릿 복붙으로 컨텍스트 낭비하는 건 이제 그만.
 
 ### 특징
 
 1. **1차 작성 + 2차 고도화로 빈틈 없는 설계 완성** — claude.ai에서 인터뷰로 기획하고, Claude Code에서 기술 심층 리뷰까지 마치니까 계획서 자체의 완성도가 다르다.
-2. **계획서 하나로 /plan→/refine→/setup 3단계 자동 세팅** — 순서대로 실행만 하면 프로젝트에 맞는 CLAUDE.md, rules, skills, agents, hooks까지 자동 생성된다.
+2. **계획서 하나로 /plan→/refine→/setup→/build 4단계 완전 자동화** — 순서대로 실행만 하면 프로젝트에 맞는 CLAUDE.md, rules, skills, agents, hooks까지 자동 생성되고, 매 세션마다 Phase 기반 구축 킥오프가 제공된다.
 3. **프로젝트 규모에 맞는 Tier 확장** — 혼자 직렬 → 서브에이전트 위임 → 팀 병렬까지 단계적으로 전환된다.
 4. **커뮤니티 스킬·MCP 자동 검색 후 설치** — 직접 구현하기 전에 380+ 스킬 카탈로그에서 먼저 찾고, 사용자 확인 후 설치한다.
 5. **세션 바뀌어도 맥락이 끊기지 않는다** — 기술 결정과 삽질 기록이 자동 축적되고, 새 세션마다 알아서 불러온다.
@@ -62,6 +62,7 @@ claude plugin list
 | `/project-setup:plan` | 계획서 작성 프롬프트 생성 |
 | `/project-setup:refine` | 계획서 고도화 프롬프트 생성 |
 | `/project-setup:setup` | 계획서 기반 프로젝트 세팅 |
+| `/project-setup:build` | 구축 킥오프 — Phase 판별 + 세션 계획 |
 
 ---
 
@@ -79,13 +80,21 @@ claude plugin list
 
 **사용자** : `project-refine-prompt.md` 프롬프트를 **claude code**에 붙이기 → 대화를 통해 `project-plan.md` 계획서 고도화 → 저장
 
-### Step 3. 프로젝트 세팅 및 구축 시작
+### Step 3. 프로젝트 세팅
 
 `/project-setup:setup` : `project-plan.md` 기반 프로젝트 세팅 (CLAUDE.md + .claude/ + .mcp.json 자동 생성)
 
-**사용자** : `/clear` 또는 새창 → `프로젝트 구축을 시작해` 입력 → claude code 가 `project-plan.md` 계획서를 토대로 프로젝트 구축 시작
+셋업 완료 시 `project-plan.md`에 **Section 7 (셋업 결과)**이 자동 추가된다. `/clear` 후에도 셋업 맥락이 보존됨.
 
-> **권장:** Step 3 프로젝트 구축 시작 전에 `/clear` 로 컨텍스트를 비운다. 기획 대화의 수정 히스토리가 컨텍스트를 오염시키므로 반드시 분리.
+> **권장:** Step 4 구축 시작 전에 `/clear` 로 컨텍스트를 비운다. 기획 대화의 수정 히스토리가 컨텍스트를 오염시키므로 반드시 분리.
+
+### Step 4. 프로젝트 구축 시작
+
+`/project-setup:build` : 계획서 + 코드베이스 분석 → 현재 Phase 판별 → 세션 작업 계획 출력
+
+**사용자** : `/clear` 또는 새창 → `/project-setup:build` 입력 → Phase 현황 + 이번 세션 목표 + 기록 리마인드 확인 → 구축 진행
+
+매 세션 시작 시 실행하면 된다. 재진입(일 후 복귀) 시에도 동일하게 `/project-setup:build`로 시작하면 decisions.md, lessons.md, git log를 읽고 이어서 진행할 Phase를 판별한다.
 
 ---
 
@@ -202,7 +211,8 @@ claude-code-project-setup/
 │       ├── commands/
 │       │   ├── plan.md          ← /project-setup:plan
 │       │   ├── refine.md        ← /project-setup:refine
-│       │   └── setup.md         ← /project-setup:setup
+│       │   ├── setup.md         ← /project-setup:setup
+│       │   └── build.md         ← /project-setup:build
 │       ├── templates/           ← 생성 시 참조할 템플릿
 │       │   ├── project-plan-prompt.md
 │       │   ├── project-refine-prompt.md

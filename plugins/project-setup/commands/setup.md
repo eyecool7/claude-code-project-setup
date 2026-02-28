@@ -54,7 +54,7 @@ echo "✅ 플러그인 경로: $PLUGIN_ROOT"
 
 ## 워크플로우
 
-### Step 1: 프로젝트 분석 실행
+### Step 1: 프로젝트 분석
 
 ```bash
 bash "$PLUGIN_ROOT/scripts/analyze-project.sh"
@@ -105,7 +105,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 rm -rf /tmp/vive-md /tmp/skills-* /tmp/ui-ux-pro-max-skill
 ```
 
-검색 결과는 Step 3 미리보기와 Step 5 파일 생성에서 참조된다.
+검색 결과는 Step 3 미리보기와 Step 4 파일 생성에서 참조된다.
 
 ### Step 3: 세팅 미리보기 + 승인
 
@@ -115,8 +115,6 @@ Step 1의 분석 결과 + 계획서 + **Step 2의 스킬/MCP 검색 결과**를 
 **출력 형식:**
 
 ```
-지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
-
 📁 생성될 파일 ({총 파일 수}개)
 ├── CLAUDE.md (약 {예상 줄 수}줄)
 ├── .claude/
@@ -156,7 +154,11 @@ Step 1의 분석 결과 + 계획서 + **Step 2의 스킬/MCP 검색 결과**를 
 - 사용자가 수정 요청 (예: "이 스킬은 빼줘", "Tier 1로 해줘") → 반영 후 미리보기 재출력 → 재승인
 - 사용자가 거부 → 세팅 중단
 
-### Step 4: CLAUDE.md 생성
+### Step 4: 세팅 실행
+
+CLAUDE.md + .claude/ 설정 파일 생성, 커뮤니티 스킬 설치, .mcp.json 생성을 수행한다.
+
+#### 4-1. CLAUDE.md 생성
 
 `$PLUGIN_ROOT/templates/claude-md-template.md`를 기반으로 변수를 채운다:
 - **계획서** → 프로젝트명, 역할, 철학, 핵심 플로우
@@ -177,7 +179,7 @@ CLAUDE.md 생성 핵심 규칙:
 - **Tier 2**: `서브에이전트 위임 구현. 독립적인 작업은 Task 도구로 병렬 위임.` + 위임 기준, `.claude/agents/` 활용, Tier 변경 시 decisions.md 기록 규칙
 - **Tier 3**: `팀 모드 구현. claude -w feature-name (worktree)으로 독립 브랜치 생성.` + worktree 필수, agents/skills 참조, Tier 변경 시 decisions.md 기록 규칙
 
-### Step 5: .claude/ 설정 생성
+#### 4-2. .claude/ 설정 생성
 
 `$PLUGIN_ROOT/templates/` 의 템플릿에서 복사 후 프로젝트에 맞게 커스터마이징:
 
@@ -289,14 +291,14 @@ Tier 2의 에이전트 생성을 포함하고, 추가로:
 | `commands/worktree.md` | 병렬 작업 시 worktree 생성·정리 가이드. |
 | `skills/agent-teams/SKILL.md` | 팀 구성 가이드: TeamCreate 사용법, 태스크 분배 패턴, worktree 필수 규칙, 실험 기능 활성화 방법. |
 
-### Step 6: 커뮤니티 스킬 설치
+#### 4-3. 커뮤니티 스킬 설치
 
 Step 2에서 확정된 검색 결과를 기반으로, "설치"로 판정된 커뮤니티 스킬을 `.claude/skills/`에 설치한다.
 프론트엔드 프로젝트면 ui-ux-pro-max를 무조건 설치한다 (skill-discovery SKILL.md 참조).
 
 설치 방법은 skill-discovery SKILL.md의 설치 절차를 따른다.
 
-### Step 7: .mcp.json 생성
+#### 4-4. .mcp.json 생성
 
 아래 우선순위로 소스를 탐색한다. 가장 먼저 찾은 소스를 사용:
 
@@ -313,7 +315,11 @@ Step 2에서 확정된 검색 결과를 기반으로, "설치"로 판정된 커�
 - stdio 타입: `"command"`, `"args"` 구조
 - HTTP 타입: `"type": "http"`, `"url"` 구조
 
-### Step 8: Git 초기화 (신규 프로젝트)
+### Step 5: 초기화 / 검증 / 세팅 요약
+
+Git 초기화, 생성 파일 검증, 완료 요약을 수행한다.
+
+#### 5-1. Git 초기화 (신규 프로젝트)
 
 git 저장소가 없으면 초기화한다. worktree 기반 병렬 작업(Tier 2/3)의 전제 조건.
 
@@ -326,7 +332,7 @@ git 저장소가 없으면 초기화한다. worktree 기반 병렬 작업(Tier 2
 
 **AGENT_TIER가 2 이상일 때**: git 저장소가 반드시 필요. 없으면 사용자에게 경고 후 자동 생성.
 
-### Step 9: 검증
+#### 5-2. 검증
 
 ```bash
 bash "$PLUGIN_ROOT/scripts/validate-setup.sh"
@@ -346,7 +352,52 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 검증 실패 시 → 문제 수정 → 검증 재실행.
 
-### Step 10: 완료 요약
+#### 5-3. Section 7 생성 (계획서에 셋업 결과 기록)
+
+`project-plan.md`의 끝에 Section 7 "셋업 결과"를 추가한다.
+이 섹션은 `/clear` 후에도 셋업 맥락을 보존하기 위한 영구 기록이다.
+
+Edit 도구로 `project-plan.md`의 마지막 줄 뒤에 아래 형식을 추가한다:
+
+```markdown
+---
+
+## 7. 셋업 결과 (자동 생성 — /project-setup:setup)
+
+**생성일:** {오늘 날짜 YYYY-MM-DD}
+**Agent Tier:** {계획서 섹션 4의 Tier 값} ({Tier 이름})
+**CLAUDE.md:** {실제 줄 수}줄
+
+### 생성 파일
+
+| 카테고리 | 파일 수 | 주요 파일 |
+|---------|:------:|----------|
+| Rules | {수} | {파일명 나열} |
+| Skills | {수} | {파일명 나열} |
+| Agents | {수} | {파일명 나열} |
+| Commands | {수} | {파일명 나열} |
+| Hooks | {수} | {파일명 나열} |
+| MCP | {수} | {서버명 나열, 없으면 "없음"} |
+
+### 호환성 주의사항
+
+- {analyze-project.sh의 CONFLICT_WARNINGS 내용. 없으면 "없음"}
+
+### 검증 결과
+
+- validate-setup.sh: {✅ 전체 통과 / ❌ N건 실패}
+- validate-env.sh: {✅ 전체 통과 / ❌ N건 실패 / ⏭️ .env 없음}
+```
+
+**데이터 소스:**
+- 생성일: 오늘 날짜
+- Agent Tier: Step 3 미리보기에서 사용한 Tier 값
+- CLAUDE.md 줄 수: Step 4-1에서 생성한 CLAUDE.md의 실제 줄 수
+- 생성 파일 집계: Step 4에서 실제로 생성한 파일들을 카테고리별로 집계
+- 호환성 주의사항: Step 1의 analyze-project.sh 결과 중 CONFLICT_WARNINGS
+- 검증 결과: Step 5-2의 validate-setup.sh, validate-env.sh 실행 결과
+
+#### 5-4. 완료 요약
 
 사용자에게 다음 형식으로 전달한다:
 
@@ -363,7 +414,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 | MCP 서버 | {서버 수}개 설정 |
 | 호환성 주의 | {있으면 경고 내용 / 없으면 "없음"} |
 
-`/clear`로 컨텍스트를 비우거나 새 창을 열고, `프로젝트 구축을 시작해`를 입력하면 계획서 기반 개발이 시작됩니다.
+`/clear`로 컨텍스트를 비우고 `/project-setup:build`를 실행하면 계획서 기반 개발이 시작됩니다.
 
 ---
 
@@ -375,8 +426,6 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 **Step 3 미리보기 출력:**
 ```
-지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
-
 📁 생성될 파일 (22개)
 ├── CLAUDE.md (약 58줄)
 ├── .claude/
@@ -404,7 +453,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 사용자 승인 → 세팅 진행 → 검증 통과
 
-**Step 10 완료 출력:**
+**Step 5 완료 출력:**
 
 | 항목 | 결과 |
 |------|------|
@@ -421,8 +470,6 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 **Step 3 미리보기 출력:**
 ```
-지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
-
 📁 생성될 파일 (16개)
 ├── CLAUDE.md (약 48줄)
 ├── .claude/
@@ -448,8 +495,6 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 **Step 3 미리보기 출력:**
 ```
-지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
-
 📁 생성될 파일 (25개)
 ├── CLAUDE.md (약 72줄)
 ├── .claude/

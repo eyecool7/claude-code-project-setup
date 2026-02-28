@@ -14,12 +14,12 @@ Every time you start a project, the anxiety hits. Something's missing — but yo
 
 This plugin answers all of these at once.
 
-Draft your plan, refine it through a deep technical interview, then follow `/plan`→`/refine`→`/setup` — CLAUDE.md and 19+ config files are auto-generated, tailored to your project. Cross-session context continuity, dependency conflict detection, tier-based scaling, and community skill auto-discovery included. Stop wasting context on copy-pasted generic templates.
+Draft your plan, refine it through a deep technical interview, then follow `/plan`→`/refine`→`/setup`→`/build` — CLAUDE.md and 19+ config files are auto-generated, tailored to your project, with a structured build kickoff every session. Cross-session context continuity, dependency conflict detection, tier-based scaling, and community skill auto-discovery included. Stop wasting context on copy-pasted generic templates.
 
 ### Features
 
 1. **Two-pass planning for airtight design** — Interview-based planning in claude.ai, then deep technical review in Claude Code. The plan itself is the differentiator.
-2. **One plan, 3-step auto-setup** — Just follow /plan→/refine→/setup and get project-tailored CLAUDE.md, rules, skills, agents, and hooks auto-generated.
+2. **One plan, 4-step full automation** — Follow /plan→/refine→/setup→/build for project-tailored CLAUDE.md, rules, skills, agents, hooks, and a Phase-based build kickoff every session.
 3. **Tier-based scaling** — Single agent → subagent delegation → team parallelism, expanding as your project grows.
 4. **Community skill & MCP auto-discovery** — Searches 380+ skill catalogs before building from scratch. Installs only after user confirmation.
 5. **Context never breaks between sessions** — Technical decisions and lessons learned auto-accumulate and reload every session.
@@ -45,9 +45,17 @@ Draft your plan, refine it through a deep technical interview, then follow `/pla
 
 **Command** `/project-setup:setup` : Auto-generate project config based on `project-plan.md` (CLAUDE.md + .claude/ + .mcp.json)
 
-**User** : `/clear` or new session → Enter `Start building the project` → Project setup begins based on `project-plan.md`
+Setup completion auto-appends **Section 7 (Setup Results)** to `project-plan.md`, preserving setup context after `/clear`.
 
-> **Recommended:** Run Steps 1-2 (planning) and Step 3 (implementation) in separate sessions. Planning conversation history pollutes implementation context.
+> **Recommended:** Run `/clear` before Step 4. Planning conversation history pollutes build context.
+
+### Step 4. Start Building
+
+**Command** `/project-setup:build` : Analyze plan + codebase → determine current Phase → output session action plan
+
+**User** : `/clear` or new session → `/project-setup:build` → Review Phase status + session goals + process reminders → Start building
+
+Run at the start of every session. For re-entry (returning after days), `/project-setup:build` reads decisions.md, lessons.md, and git log to determine where to continue.
 
 ---
 
@@ -192,7 +200,8 @@ claude-code-project-setup/
 │       ├── commands/
 │       │   ├── plan.md          ← /project-setup:plan
 │       │   ├── refine.md        ← /project-setup:refine
-│       │   └── setup.md         ← /project-setup:setup
+│       │   ├── setup.md         ← /project-setup:setup
+│       │   └── build.md         ← /project-setup:build
 │       ├── templates/           ← Templates referenced during generation
 │       │   ├── claude-md-template.md
 │       │   ├── rules/
