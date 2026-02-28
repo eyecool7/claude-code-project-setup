@@ -28,19 +28,6 @@ Follow 4 commands, and project-tailored config is auto-generated.
 3. **`/setup`** — Project setup: auto-generate CLAUDE.md and config files from the plan
 4. **`/build`** — Project build: status analysis and session goals every session
 
-```
-Plan → Refine → Setup → Build
-                          ├── CLAUDE.md (~80 lines)
-                          ├── .claude/rules/      (4-7)
-                          ├── .claude/skills/     (3+)
-                          ├── .claude/agents/     (3+)
-                          ├── .claude/commands/   (3)
-                          ├── .claude/hooks/      (3)
-                          ├── .claude/decisions.md
-                          ├── .claude/lessons.md
-                          └── .mcp.json (optional)
-```
-
 ---
 
 ## Installation
@@ -74,39 +61,33 @@ claude plugin list
 
 ## Key Features
 
-### 1. Airtight 2-Pass Design
+### 1. Airtight 2-Pass Design for a Polished Plan
 
-Interview-based planning in claude.ai, then deep technical review in Claude Code.
-The plan itself is the differentiator.
+Structured interview-based planning in claude.ai, then deep technical review in Claude Code. The plan itself is the differentiator.
 
-### 2. One Plan, 4-Step Full Automation
+### 2. Plan-Driven 4-Step Guide for Automated Project Setup
 
-Follow `/plan` → `/refine` → `/setup` → `/build` and project-tailored CLAUDE.md, rules, skills, agents, and hooks are auto-generated. Plan-based build kickoff every session.
+Follow `/plan` → `/refine` → `/setup` → `/build` and project-tailored CLAUDE.md, rules, skills, agents, and hooks are auto-generated. From CLAUDE.md length to security settings, the plan decides.
 
-### 3. Tier-Based Scaling
-
-Work mode adapts to project size:
+### 3. Auto-Detected Tier-Based Work Mode for Your Project Scale
 
 | Tier | Mode | Best For |
-|:----:|------|----------|
+|------|------|----------|
 | 1 | Sequential | 3 or fewer features, simple projects |
 | 2 | Subagents | Independent work blocks, context savings needed |
-| 3 | Agent Teams | Large-scale, inter-agent communication, parallel sessions |
+| 3 | Agent Teams | Large-scale parallel sessions, inter-agent communication needed |
 
-### 4. Community Skill & MCP Auto-Discovery
+### 4. Auto-Discovery from Community Skill & MCP Catalogs
 
-Searches 380+ skill catalogs before building from scratch.
-Installs only after user confirmation. No auto-install.
+During the refine step, skills and MCP servers your project needs are searched from catalogs. Installed only after user confirmation.
 
-### 5. Cross-Session Context Continuity
+### 5. Cross-Session Context Continuity via Decision & Troubleshooting Logs
 
-Technical decisions (`decisions.md`) and lessons learned (`lessons.md`) auto-accumulate.
-Run `/build` in a new session and it reads all prior records to restore context.
+`decisions.md` and `lessons.md` accumulate automatically. Run `/build` in a new session and it reads all prior records to restore context.
 
-### 6. Structural Mistake Prevention
+### 6. Validation Scripts to Catch Stack Conflicts & Security Gaps Early
 
-Stack/dependency conflicts auto-detected, missing configs and security gaps caught by validation scripts.
-Non-standard combos like Remotion + Next.js get explicit warnings.
+Auto-detects stack/dependency conflicts and missing configs. Non-standard combos like Remotion + Next.js get early warnings.
 
 ---
 
