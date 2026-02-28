@@ -68,6 +68,26 @@ rm -rf /tmp/ui-ux-pro-max-skill
 | (예: GitHub) | @modelcontextprotocol/server-github | {"command":"npx","args":["-y","..."]} |
 ```
 
+또한 아래 형식의 `확정_MCP` JSON 블록도 함께 출력한다.
+이 블록은 setup 단계에서 `.mcp.json` 자동 생성에 사용된다.
+
+````json 확정_MCP
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "npx",
+      "args": ["-y", "package-name"],
+      "env": {
+        "API_KEY": "${API_KEY}"
+      }
+    }
+  }
+}
+````
+
+코드 펜스 언어 태그를 반드시 `json 확정_MCP`로 지정한다 (setup 단계에서 이 태그로 블록을 식별).
+테이블은 사람이 읽고, JSON 블록은 기계가 읽는다. **둘 다 출력해야 한다.**
+
 ### Step 4: 사용자 확인 (CRITICAL)
 **설치 전 반드시 사용자에게 확인받을 것.**
 

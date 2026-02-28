@@ -230,30 +230,20 @@ rm -rf /tmp/vive-md /tmp/skills-* /tmp/ui-ux-pro-max-skill
 
 ### Step 3.6: .mcp.json 생성
 
-계획서 3번 섹션의 MCP 검색 결과에서 확정된 MCP 서버로 `.mcp.json`을 생성한다.
-MCP 검색 결과가 없으면 스택 분석 결과와 계획서의 외부 서비스 목록을 기반으로 생성한다.
+아래 우선순위로 소스를 탐색한다. 가장 먼저 찾은 소스를 사용:
 
-**형식:**
-```json
-{
-  "mcpServers": {
-    "server-name": {
-      "command": "npx",
-      "args": ["-y", "package-name"],
-      "env": {
-        "API_KEY": "${API_KEY}"
-      }
-    }
-  }
-}
-```
+| 우선순위 | 소스 | 위치 | 설명 |
+|:-------:|------|------|------|
+| 1 | 계획서 확정 `.mcp.json` | 섹션 3에 완성된 JSON 블록 | refine에서 사용자가 직접 확정한 것. 그대로 복사. |
+| 2 | `확정_MCP` JSON 블록 | 섹션 3 내 ````json 확정_MCP` 코드 블록 | skill-discovery가 생성한 구조화 데이터. 그대로 복사. |
+| 3 | 섹션 3 MCP 테이블 | 섹션 3 내 마크다운 테이블 | 테이블에서 서버명·설정을 추출하여 JSON 생성. |
+| 4 | 섹션 5 재검색 | 섹션 5 "외부 서비스 목록" | 섹션 3이 비었을 때: 서비스명을 키워드로 skill-discovery 재실행 → MCP 선정 |
+| 5 | 생략 | — | 섹션 3도 5도 비어있으면 `.mcp.json` 생성하지 않음 |
 
 **생성 규칙:**
-- 계획서에 확정된 `.mcp.json`이 있으면 그대로 복사 (가장 우선)
 - API 키 등 시크릿은 반드시 `${ENV_VAR}` 형식 사용 (하드코딩 절대 금지)
 - stdio 타입: `"command"`, `"args"` 구조
 - HTTP 타입: `"type": "http"`, `"url"` 구조
-- 계획서에 MCP 서버가 없으면 `.mcp.json` 생성 생략
 
 ### Step 3.7: Git 초기화 (신규 프로젝트)
 
