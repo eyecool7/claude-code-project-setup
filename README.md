@@ -28,6 +28,19 @@
 3. **`/setup`** — 프로젝트 세팅: 계획서 기반 CLAUDE.md 및 설정 파일 자동 생성
 4. **`/build`** — 프로젝트 구축: 매 세션마다 현황 분석과 세션 목표 제시
 
+```
+claude-code-project-launch/
+├── .claude-plugin/marketplace.json
+├── plugins/project-launch/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/          ← plan, refine, setup, build
+│   ├── templates/         ← 생성 시 참조할 템플릿
+│   └── scripts/           ← 분석/검증 스크립트
+├── README.md
+├── README.en.md
+└── LICENSE
+```
+
 ---
 
 ## 설치 방법
@@ -175,7 +188,7 @@ refine 단계에서 카탈로그에서 프로젝트에 필요한 스킬과 MCP�
 
 ## 산출물
 
-### 항상 생성 (18개 파일)
+### 항상 생성 (20개 파일)
 
 | 카테고리 | 파일 | 역할 |
 |---------|------|------|
@@ -236,25 +249,8 @@ my-project/
 | 구성요소 | 설명 |
 |----------|------|
 | 커맨드 (4개) | `/project-launch:plan`, `refine`, `setup`, `build` |
-| 템플릿 | CLAUDE.md, rules, skills, agents, commands, hooks 생성용 |
+| 템플릿 (27개) | CLAUDE.md, rules, skills, agents, commands, hooks, settings, records 생성용 + 프롬프트 2개 |
 | 스크립트 (3개) | analyze-project, validate-env, validate-setup |
-
----
-
-## 플러그인 구조
-
-```
-claude-code-project-launch/
-├── .claude-plugin/marketplace.json
-├── plugins/project-launch/
-│   ├── .claude-plugin/plugin.json
-│   ├── commands/          ← plan, refine, setup, build
-│   ├── templates/         ← 생성 시 참조할 템플릿
-│   └── scripts/           ← 분석/검증 스크립트
-├── README.md
-├── README.en.md
-└── LICENSE
-```
 
 ---
 

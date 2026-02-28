@@ -28,6 +28,19 @@ Follow 4 commands, and project-tailored config is auto-generated.
 3. **`/setup`** — Project setup: auto-generate CLAUDE.md and config files from the plan
 4. **`/build`** — Project build: status analysis and session goals every session
 
+```
+claude-code-project-launch/
+├── .claude-plugin/marketplace.json
+├── plugins/project-launch/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/          ← plan, refine, setup, build
+│   ├── templates/         ← Templates referenced during generation
+│   └── scripts/           ← Analysis/validation scripts
+├── README.md
+├── README.en.md
+└── LICENSE
+```
+
 ---
 
 ## Installation
@@ -175,7 +188,7 @@ Run at the start of every session. For re-entry (returning after days), it reads
 
 ## Output
 
-### Always Generated (18 files)
+### Always Generated (20 files)
 
 | Category | Files | Role |
 |----------|-------|------|
@@ -236,25 +249,8 @@ my-project/
 | Component | Description |
 |-----------|-------------|
 | Commands (4) | `/project-launch:plan`, `refine`, `setup`, `build` |
-| Templates | CLAUDE.md, rules, skills, agents, commands, hooks generation |
+| Templates (27) | CLAUDE.md, rules, skills, agents, commands, hooks, settings, records generation + 2 prompts |
 | Scripts (3) | analyze-project, validate-env, validate-setup |
-
----
-
-## Plugin Structure
-
-```
-claude-code-project-launch/
-├── .claude-plugin/marketplace.json
-├── plugins/project-launch/
-│   ├── .claude-plugin/plugin.json
-│   ├── commands/          ← plan, refine, setup, build
-│   ├── templates/         ← Templates referenced during generation
-│   └── scripts/           ← Analysis/validation scripts
-├── README.md
-├── README.en.md
-└── LICENSE
-```
 
 ---
 
