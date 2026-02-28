@@ -106,11 +106,15 @@ refine 단계에서 카탈로그에서 프로젝트에 필요한 스킬과 MCP�
 
 프롬프트를 **claude.ai**에 붙이고 인터뷰를 통해 `project-plan.md` 완성 → 프로젝트 루트에 저장
 
+> <sub>**실행 시 안내:**<br>1. `project-plan-prompt.md`를 열어서 `[프로젝트 이름]`과 `프로젝트 개요`를 채우세요.<br>2. 프롬프트 전체 내용을 **claude.ai** 채팅창에 붙여넣고 대화하며 계획서를 완성하세요.<br>3. 완성된 계획서를 `project-plan.md`로 저장하고 프로젝트 루트에 넣으세요.<br>4. `/project-launch:refine`을 실행하여 다음 단계로 넘어갑니다.</sub>
+
 ### Step 2. 계획서 고도화
 
 `/project-launch:refine` → `project-refine-prompt.md` 생성
 
 프롬프트를 **Claude Code**에 붙이고 기술 리뷰 + 스킬/MCP 검색 → `project-plan.md` 고도화 → 저장
+
+> <sub>**실행 시 안내:**<br>1. `project-refine-prompt.md`를 열어서 프롬프트 내용을 **Claude Code** 채팅창에 붙여넣습니다.<br>2. Claude Code와 대화하며 `project-plan.md` 계획서를 고도화하세요.<br>3. 수정된 계획서를 프로젝트 루트에 `project-plan.md`로 다시 저장합니다.<br>4. `/project-launch:setup`을 실행하여 다음 단계로 넘어갑니다.</sub>
 
 ### Step 3. 프로젝트 세팅
 
@@ -118,13 +122,15 @@ refine 단계에서 카탈로그에서 프로젝트에 필요한 스킬과 MCP�
 
 셋업 완료 시 `project-plan.md`에 **Section 7 (셋업 결과)**이 자동 추가돼요. `/clear` 후에도 셋업 맥락이 보존됩니다.
 
-> **권장:** Step 4 전에 `/clear`로 컨텍스트를 비우세요. 기획 대화가 구현 컨텍스트를 오염시킵니다.
+> <sub>**실행 시 안내:**<br>세팅이 완료되었습니다.<br><br>| 항목 | 결과 |<br>| CLAUDE.md | {줄 수}줄 |<br>| .claude/ 파일 | {파일 수}개 |<br>| 작업 방식 | Tier {1/2/3} — {모드명} |<br>| 커뮤니티 스킬 | {수}개 설치 |<br>| MCP 서버 | {수}개 설정 |<br><br>`/clear`로 컨텍스트를 비우고 `/project-launch:build`를 실행하면 계획서 기반 개발이 시작됩니다.</sub>
 
 ### Step 4. 구축 시작
 
 `/project-launch:build` → 계획서 기반 현황 분석 + 세션 목표 출력
 
 매 세션 시작 시 실행하면 돼요. 며칠 후 재진입해도 계획서 전체 + `decisions.md`, `lessons.md`, `git log`를 읽고 현재 진행 지점을 판별합니다.
+
+> <sub>**실행 시 안내:**<br>📋 **프로젝트 현황**<br><br>| Phase | 상태 | 비고 |<br>| Phase 1: 기반 | ✅/🔨/⬜ | ... |<br><br>**현재 Phase:** Phase N — {이름}<br>**이번 세션 목표:** (미달성 완료 기준 중 2–4개)<br>**주의사항:** decisions.md + lessons.md 관련 사항<br><br>📝 기록 규칙: decisions.md(기술 결정 즉시), lessons.md(실패 해결 즉시), 세션 종료 전 자체 점검</sub>
 
 ---
 

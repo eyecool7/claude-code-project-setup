@@ -106,11 +106,15 @@ Auto-detects stack/dependency conflicts and missing configs. Non-standard combos
 
 Paste the prompt into **claude.ai**, complete the plan through interview → save as `project-plan.md` in project root
 
+> <sub>**On run:**<br>1. Open `project-plan-prompt.md` and fill in `[Project Name]` and `Project Overview`.<br>2. Paste the full prompt into **claude.ai** and complete the plan through conversation.<br>3. Save the finished plan as `project-plan.md` in the project root.<br>4. Run `/project-launch:refine` to proceed to the next step.</sub>
+
 ### Step 2. Refine Project Plan
 
 `/project-launch:refine` → generates `project-refine-prompt.md`
 
 Paste the prompt into **Claude Code**, run technical review + skill/MCP search → refine `project-plan.md` → save
+
+> <sub>**On run:**<br>1. Open `project-refine-prompt.md` and paste the prompt into **Claude Code**.<br>2. Refine `project-plan.md` through conversation with Claude Code.<br>3. Save the refined plan back to `project-plan.md` in the project root.<br>4. Run `/project-launch:setup` to proceed to the next step.</sub>
 
 ### Step 3. Project Setup
 
@@ -118,13 +122,15 @@ Paste the prompt into **Claude Code**, run technical review + skill/MCP search �
 
 On completion, **Section 7 (Setup Results)** is auto-appended to `project-plan.md`. Context preserved after `/clear`.
 
-> **Recommended:** Run `/clear` before Step 4. Planning conversation history pollutes build context.
+> <sub>**On run:**<br>Setup complete.<br><br>| Item | Result |<br>| CLAUDE.md | {lines} lines |<br>| .claude/ files | {count} files |<br>| Work mode | Tier {1/2/3} — {mode} |<br>| Community skills | {count} installed |<br>| MCP servers | {count} configured |<br><br>Run `/clear` then `/project-launch:build` to start plan-based development.</sub>
 
 ### Step 4. Start Building
 
 `/project-launch:build` → plan-based status analysis + session goals output
 
 Run at the start of every session. For re-entry (returning after days), it reads the full plan + `decisions.md`, `lessons.md`, and `git log` to determine where to continue.
+
+> <sub>**On run:**<br>📋 **Project Status**<br><br>| Phase | Status | Notes |<br>| Phase 1: Foundation | ✅/🔨/⬜ | ... |<br><br>**Current Phase:** Phase N — {name}<br>**Session goals:** (2–4 items from incomplete criteria)<br>**Notes:** Related decisions.md + lessons.md entries<br><br>📝 Record rules: decisions.md (on tech decisions), lessons.md (on failure resolution), self-check before session end</sub>
 
 ---
 
