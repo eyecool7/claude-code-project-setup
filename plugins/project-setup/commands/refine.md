@@ -26,8 +26,12 @@ description: 프로젝트 계획서 고도화 프롬프트를 파일로 생성. 
 **사용법:**
 1. `project-refine-prompt.md`를 열어서 프롬프트 내용을 **claude code** 채팅창에 붙여넣습니다.
 2. claude code 와 대화하며 `project-plan.md` 계획서를 고도화하세요.
-3. 수정된 계획서를 `project-plan.md`로 저장합니다.
+3. 수정된 계획서를 프로젝트 루트에 project-plan.md로 다시 저장합니다. (기존 파일 덮어쓰기)
 4. `/project-setup:setup` 명령어를 실행하여 다음 단계로 넘어갑니다.
+
+**전제 조건**
+- 계획서 작성이 완료되어 `project-plan.md`가 프로젝트 루트에 있어야 한다.
+- /project-setup:plan 을 먼저 거쳐야 함
 
 ---
 
