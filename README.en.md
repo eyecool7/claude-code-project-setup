@@ -2,9 +2,20 @@
 
 [한국어](README.md)
 
-Set up your entire Claude Code project in 3 commands.
+One plan to set up your entire Claude Code project.
 
-Stop wasting context on copy-pasted generic templates. This plugin refines your project plan through a 2-step interview first, then generates 18+ config files tailored to your project: CLAUDE.md (~80 lines) + path-scoped rules + auto-discovered skills + agents + hooks + MCP.
+Draft your plan, refine it through a deep technical interview, then follow 3 steps — /plan→/refine→/setup — to auto-generate CLAUDE.md and 19+ config files tailored to your project. Cross-session context continuity, dependency conflict detection, tier-based scaling, and community skill auto-discovery included. Stop wasting context on copy-pasted generic templates.
+
+## Features
+
+1. **Two-pass planning for airtight design** — Interview-based planning in claude.ai, then deep technical review in Claude Code. The plan itself is the differentiator.
+2. **One plan, 3-step auto-setup** — Just follow /plan→/refine→/setup and get project-tailored CLAUDE.md, rules, skills, agents, and hooks auto-generated.
+3. **Tier-based scaling** — Single agent → subagent delegation → team parallelism, expanding as your project grows.
+4. **Community skill & MCP auto-discovery** — Searches 380+ skill catalogs before building from scratch. Installs only after user confirmation.
+5. **Cross-session context continuity** — Technical decisions in decisions.md, lessons learned in lessons.md, auto-loaded every session via hooks.
+6. **Structural error prevention** — analyze-project.sh detects stack/dependency conflicts, validate-setup.sh catches unreplaced variables, leftover TODOs, and hardcoded secrets.
+
+---
 
 ## Usage
 
