@@ -77,7 +77,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 스크립트 출력은 내부 참조용으로만 사용한다 (사용자에게 raw 출력을 그대로 보여주지 않는다).
 
-### Step 1.5: 스킬/MCP 검색
+### Step 2: 스킬/MCP 검색
 
 미리보기에 정확한 스킬/MCP 정보를 표시하기 위해, 파일 생성 전에 먼저 커뮤니티 검색을 수행한다.
 
@@ -105,11 +105,11 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 rm -rf /tmp/vive-md /tmp/skills-* /tmp/ui-ux-pro-max-skill
 ```
 
-검색 결과는 Step 1.6 미리보기와 Step 3 파일 생성에서 참조된다.
+검색 결과는 Step 3 미리보기와 Step 5 파일 생성에서 참조된다.
 
-### Step 1.6: 세팅 미리보기 + 승인
+### Step 3: 세팅 미리보기 + 승인
 
-Step 1의 분석 결과 + 계획서 + **Step 1.5의 스킬/MCP 검색 결과**를 조합하여 **구조화된 미리보기**를 사용자에게 보여준다.
+Step 1의 분석 결과 + 계획서 + **Step 2의 스킬/MCP 검색 결과**를 조합하여 **구조화된 미리보기**를 사용자에게 보여준다.
 사용자가 결과물을 예측할 수 있는 상태에서 승인받는 것이 목적이다.
 
 **출력 형식:**
@@ -147,16 +147,16 @@ Step 1의 분석 결과 + 계획서 + **Step 1.5의 스킬/MCP 검색 결과**�
 
 **미리보기 생성 규칙:**
 - **파일 트리**: Step 1 감지 결과(HAS_FRONTEND, HAS_BACKEND 등)와 계획서(Tier, 커스텀 스킬/에이전트)를 조합하여 실제 생성될 파일만 나열. 조건부 파일은 조건 충족 시에만 표시.
-- **스킬 & MCP**: Step 1.5의 검색 결과에서 "설치" 판정된 커뮤니티 스킬 + "직접 구현" 판정된 커스텀 스킬 + MCP 서버를 구분하여 나열.
+- **스킬 & MCP**: Step 2의 검색 결과에서 "설치" 판정된 커뮤니티 스킬 + "직접 구현" 판정된 커스텀 스킬 + MCP 서버를 구분하여 나열.
 - **작업 방식**: 계획서 4번의 AGENT_TIER 값을 읽어 Tier 번호 + 모드명 + 한 줄 설명. Tier 2/3이면 커스텀 에이전트 이름도 나열.
 - **충돌 경고**: Step 1의 CONFLICT_WARNINGS가 있으면 표시. 없으면 생략.
 
 **승인 흐름:**
-- 사용자가 승인 → Step 2로 진행
+- 사용자가 승인 → Step 4로 진행
 - 사용자가 수정 요청 (예: "이 스킬은 빼줘", "Tier 1로 해줘") → 반영 후 미리보기 재출력 → 재승인
 - 사용자가 거부 → 세팅 중단
 
-### Step 2: CLAUDE.md 생성
+### Step 4: CLAUDE.md 생성
 
 `$PLUGIN_ROOT/templates/claude-md-template.md`를 기반으로 변수를 채운다:
 - **계획서** → 프로젝트명, 역할, 철학, 핵심 플로우
@@ -177,7 +177,7 @@ CLAUDE.md 생성 핵심 규칙:
 - **Tier 2**: `서브에이전트 위임 구현. 독립적인 작업은 Task 도구로 병렬 위임.` + 위임 기준, `.claude/agents/` 활용, Tier 변경 시 decisions.md 기록 규칙
 - **Tier 3**: `팀 모드 구현. claude -w feature-name (worktree)으로 독립 브랜치 생성.` + worktree 필수, agents/skills 참조, Tier 변경 시 decisions.md 기록 규칙
 
-### Step 3: .claude/ 설정 생성
+### Step 5: .claude/ 설정 생성
 
 `$PLUGIN_ROOT/templates/` 의 템플릿에서 복사 후 프로젝트에 맞게 커스터마이징:
 
@@ -232,7 +232,7 @@ Settings/Commands/Hooks/Agents:
 | `rules/frontend/react.md` | 템플릿 복사 후 프로젝트 컴포넌트 구조·도메인 폴더로 채움. |
 | `rules/frontend/styles.md` | 템플릿 복사 후 프로젝트 디자인 토큰으로 채움. |
 | `skills/design-rules/SKILL.md` | 템플릿 복사 후 TODO를 프로젝트 팔레트·다크모드로 채움. AI 디자인 키워드는 프로젝트에 맞게 1개씩 선택. |
-| `skills/ui-ux-pro-max/` | Step 1.5에서 skill-discovery를 통해 설치 (프론트엔드 프로젝트 필수). |
+| `skills/ui-ux-pro-max/` | Step 2에서 skill-discovery를 통해 설치 (프론트엔드 프로젝트 필수). |
 
 **조건부 생성 (HAS_BACKEND=true + DB 사용):**
 
@@ -289,14 +289,14 @@ Tier 2의 에이전트 생성을 포함하고, 추가로:
 | `commands/worktree.md` | 병렬 작업 시 worktree 생성·정리 가이드. |
 | `skills/agent-teams/SKILL.md` | 팀 구성 가이드: TeamCreate 사용법, 태스크 분배 패턴, worktree 필수 규칙, 실험 기능 활성화 방법. |
 
-### Step 3.5: 커뮤니티 스킬 설치
+### Step 6: 커뮤니티 스킬 설치
 
-Step 1.5에서 확정된 검색 결과를 기반으로, "설치"로 판정된 커뮤니티 스킬을 `.claude/skills/`에 설치한다.
+Step 2에서 확정된 검색 결과를 기반으로, "설치"로 판정된 커뮤니티 스킬을 `.claude/skills/`에 설치한다.
 프론트엔드 프로젝트면 ui-ux-pro-max를 무조건 설치한다 (skill-discovery SKILL.md 참조).
 
 설치 방법은 skill-discovery SKILL.md의 설치 절차를 따른다.
 
-### Step 3.6: .mcp.json 생성
+### Step 7: .mcp.json 생성
 
 아래 우선순위로 소스를 탐색한다. 가장 먼저 찾은 소스를 사용:
 
@@ -313,7 +313,7 @@ Step 1.5에서 확정된 검색 결과를 기반으로, "설치"로 판정된 �
 - stdio 타입: `"command"`, `"args"` 구조
 - HTTP 타입: `"type": "http"`, `"url"` 구조
 
-### Step 3.7: Git 초기화 (신규 프로젝트)
+### Step 8: Git 초기화 (신규 프로젝트)
 
 git 저장소가 없으면 초기화한다. worktree 기반 병렬 작업(Tier 2/3)의 전제 조건.
 
@@ -326,7 +326,7 @@ git 저장소가 없으면 초기화한다. worktree 기반 병렬 작업(Tier 2
 
 **AGENT_TIER가 2 이상일 때**: git 저장소가 반드시 필요. 없으면 사용자에게 경고 후 자동 생성.
 
-### Step 4: 검증
+### Step 9: 검증
 
 ```bash
 bash "$PLUGIN_ROOT/scripts/validate-setup.sh"
@@ -346,7 +346,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 검증 실패 시 → 문제 수정 → 검증 재실행.
 
-### Step 5: 완료 요약
+### Step 10: 완료 요약
 
 사용자에게 다음 형식으로 전달한다:
 
@@ -373,7 +373,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 사용자: "이 프로젝트 세팅해줘" (계획서 이미 존재)
 
-**Step 1.6 미리보기 출력:**
+**Step 3 미리보기 출력:**
 ```
 지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
 
@@ -404,7 +404,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 사용자 승인 → 세팅 진행 → 검증 통과
 
-**Step 5 완료 출력:**
+**Step 10 완료 출력:**
 
 | 항목 | 결과 |
 |------|------|
@@ -419,7 +419,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 사용자: "세팅"
 
-**Step 1.6 미리보기 출력:**
+**Step 3 미리보기 출력:**
 ```
 지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
 
@@ -446,7 +446,7 @@ bash "$PLUGIN_ROOT/scripts/validate-env.sh"
 
 ### 예시 3: Next.js + Remotion (충돌 감지 + Tier 2)
 
-**Step 1.6 미리보기 출력:**
+**Step 3 미리보기 출력:**
 ```
 지금부터 project-plan.md 계획서를 근거로 프로젝트 세팅을 시작합니다.
 
