@@ -1,6 +1,6 @@
 {
   "name": "project-launch",
-  "description": "프로젝트 계획서 기반 Claude Code 설정 자동 생성. 계획서 작성(/project-launch:plan) → 고도화(/project-launch:refine) → 셋업(/project-launch:setup) → 구축(/project-launch:build) 4단계 워크플로우.",
+  "description": "계획서 작성부터 자동 세팅, 단계별 구축 가이드까지 — Claude Code 프로젝트의 Launchpad. 계획서 작성(/project-launch:plan) → 고도화(/project-launch:refine) → 셋업(/project-launch:setup) → 구축(/project-launch:build) 4단계 워크플로우.",
   "author": {
     "name": "eyecool7"
   },

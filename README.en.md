@@ -1,6 +1,6 @@
 # Project Launch
 
-Plan-driven Claude Code project auto-setup — from one plan document to CLAUDE.md + 19 config files.
+From plan writing to auto-setup and step-by-step build guidance — a Launchpad for Claude Code projects.
 
 [한국어](README.md)
 
@@ -8,24 +8,25 @@ Plan-driven Claude Code project auto-setup — from one plan document to CLAUDE.
 
 ## Who Is This For?
 
-- You want to start a Claude Code project but don't know what to set up first
-- You're debating whether CLAUDE.md should be 58 lines or 500
-- Subagents, team mode, skills, MCP — you don't know which to pick
-- Setup is done, but you have no idea what to build first
-- You come back after a few days and can't remember where you left off
+- You know a good project plan matters, but don't know what to write
+- You want to start a Claude Code project but the initial setup feels overwhelming
+  - You're debating whether CLAUDE.md should be 58 lines or 500
+  - Subagents, team mode, skills, MCP — you don't know which to pick
+  - You're not sure which skills and MCP servers your project actually needs
+  - You don't know how to configure security settings properly
+- You want a tool that doesn't stop at setup — one that guides every build session based on your plan
 - You lose context every time a session changes and keep repeating mistakes
-- You're done copy-pasting generic templates and want setup tailored to your project
 
 ---
 
 ## How Does It Work?
 
-Follow 4 commands and project-tailored config is auto-generated:
+Follow 4 commands, and project-tailored config is auto-generated.
 
-1. **Plan** — Create a project plan through an interview in claude.ai
-2. **Refine** — Deep technical review + skill/MCP search in Claude Code
-3. **Setup** — Auto-generate CLAUDE.md + 19 config files from the plan
-4. **Build** — Every session: detect current Phase + output session goals
+1. **`/plan`** — Plan creation: generate a project plan through a structured interview
+2. **`/refine`** — Plan refinement: complete the plan with deep technical review and skill/MCP discovery
+3. **`/setup`** — Project setup: auto-generate CLAUDE.md and config files from the plan
+4. **`/build`** — Project build: status analysis and session goals every session
 
 ```
 Plan → Refine → Setup → Build
@@ -80,7 +81,7 @@ The plan itself is the differentiator.
 
 ### 2. One Plan, 4-Step Full Automation
 
-Follow `/plan` → `/refine` → `/setup` → `/build` and project-tailored CLAUDE.md, rules, skills, agents, and hooks are auto-generated. Phase-based build kickoff every session.
+Follow `/plan` → `/refine` → `/setup` → `/build` and project-tailored CLAUDE.md, rules, skills, agents, and hooks are auto-generated. Plan-based build kickoff every session.
 
 ### 3. Tier-Based Scaling
 
@@ -100,7 +101,7 @@ Installs only after user confirmation. No auto-install.
 ### 5. Cross-Session Context Continuity
 
 Technical decisions (`decisions.md`) and lessons learned (`lessons.md`) auto-accumulate.
-Run `/build` in a new session and it reads all prior records to determine the current Phase.
+Run `/build` in a new session and it reads all prior records to restore context.
 
 ### 6. Structural Mistake Prevention
 
@@ -116,7 +117,7 @@ Non-standard combos like Remotion + Next.js get explicit warnings.
 | `/project-launch:plan` | Generate plan creation prompt |
 | `/project-launch:refine` | Generate plan refinement prompt |
 | `/project-launch:setup` | Auto-generate project config from plan |
-| `/project-launch:build` | Build kickoff — Phase detection + session plan |
+| `/project-launch:build` | Build kickoff — plan-based status analysis + session plan |
 
 ### Step 1. Create Project Plan
 
@@ -140,9 +141,9 @@ On completion, **Section 7 (Setup Results)** is auto-appended to `project-plan.m
 
 ### Step 4. Start Building
 
-`/project-launch:build` → Phase detection + session goals output
+`/project-launch:build` → plan-based status analysis + session goals output
 
-Run at the start of every session. For re-entry (returning after days), it reads `decisions.md`, `lessons.md`, and `git log` to determine where to continue.
+Run at the start of every session. For re-entry (returning after days), it reads the full plan + `decisions.md`, `lessons.md`, and `git log` to determine where to continue.
 
 ---
 
