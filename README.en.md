@@ -125,7 +125,7 @@ Run `/project-launch:refine` → `project-refine-prompt.md` auto-generated → P
 
 ### Step 3. Project Setup
 
-Run `/project-launch:setup` → CLAUDE.md + .claude/ + .mcp.json auto-generated → **Setup results** auto-appended to `project-plan.md` → Setup context preserved even after `/clear`
+Run `/project-launch:setup` → Plan-based skill/MCP search → Setup preview output/confirm → CLAUDE.md and config files auto-generated → **Setup results** auto-appended to `project-plan.md` (setup context preserved even after `/clear`)
 
 > **Shows a setup preview for approval before executing:**
 >
@@ -152,7 +152,7 @@ Run `/project-launch:setup` → CLAUDE.md + .claude/ + .mcp.json auto-generated 
 
 ### Step 4. Start Building
 
-Run `/project-launch:build` → Plan-based status analysis + session goals output → Even after days away, reads full plan + `decisions.md`, `lessons.md`, `git log` to determine where to continue
+Run `/project-launch:build` → Plan-based status analysis + session goals output → Start building (even after days away, reads full plan + `decisions.md`, `lessons.md`, `git log` to determine where to continue)
 
 > **Output example:**
 > 📋 **Project Status**
