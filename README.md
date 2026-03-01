@@ -46,7 +46,7 @@
 
 ## 설치 방법
 
-### 방법 1: Claude Code 플러그인 (권장)
+**방법 1: Claude Code 플러그인 (권장)**
 
 Claude Code 안에서 먼저 마켓플레이스를 추가합니다.
 
@@ -60,7 +60,7 @@ Claude Code 안에서 먼저 마켓플레이스를 추가합니다.
 /plugin install project-launch@eyecool7
 ```
 
-### 방법 2: 터미널 CLI
+**방법 2: 터미널 CLI**
 
 일반 터미널 (zsh/bash)에서 아래를 복붙하여 실행하세요.
 
@@ -72,7 +72,7 @@ claude plugin install project-launch@eyecool7
 claude plugin list
 ```
 
-### 요구사항
+**요구사항**
 
 - Claude Code v1.0.33 이상 (`claude --version`)
 - 업데이트: `npm update -g @anthropic-ai/claude-code`

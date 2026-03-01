@@ -46,7 +46,7 @@ Follow 4 commands, and project-tailored config is auto-generated.
 
 ## Installation
 
-### Method 1: Claude Code Plugin (Recommended)
+**Method 1: Claude Code Plugin (Recommended)**
 
 Add the marketplace inside Claude Code first.
 
@@ -60,7 +60,7 @@ Then install the plugin.
 /plugin install project-launch@eyecool7
 ```
 
-### Method 2: Terminal CLI
+**Method 2: Terminal CLI**
 
 Run in a regular terminal (zsh/bash).
 
@@ -72,7 +72,7 @@ claude plugin install project-launch@eyecool7
 claude plugin list
 ```
 
-### Requirements
+**Requirements**
 
 - Claude Code v1.0.33 or higher (`claude --version`)
 - Update: `npm update -g @anthropic-ai/claude-code`
