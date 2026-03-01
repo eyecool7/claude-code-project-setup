@@ -36,15 +36,15 @@ Follow the 4 commands in order, and your project setup and build are complete.
 
 ### 1. 2-Pass Plan Design
 
-Interview-based planning in claude.ai → deep technical review in Claude Code. Two passes produce a thorough, gap-free plan. Provides project-plan-prompt and project-refine-prompt.
+Interview-based planning in claude.ai → deep technical review in Claude Code. Two passes produce a thorough, gap-free plan. Pass 1 structures product context, core features, workflows, and implementation order through a guided interview. Pass 2 adds technical depth — stack compatibility checks, dependency conflict detection, and skill/MCP recommendations. Each pass comes with a ready-made prompt (project-plan-prompt and project-refine-prompt), so you never have to write one from scratch.
 
-### 2. 4-Step Automated Setup
+### 2. 4-Step Plan/Setup/Build Automation
 
-Run /plan → /refine → /setup → /build commands in sequence to complete the planning, setup, and build process with ease.
+Run /plan → /refine → /setup → /build commands in sequence to complete the planning, setup, and build process with ease. The setup step auto-generates 20 files — CLAUDE.md, rules, skills, agents, commands, hooks, and settings — all driven by your plan. CLAUDE.md length, security settings, agent structure — the plan decides everything, ensuring a consistent project environment and delivering results faithful to your original vision.
 
 ### 3. Tier-Based Work Mode
 
-Automatically determines the work mode based on project scale, equipping the right agent structure and skills.
+Automatically determines the work mode based on project scale, equipping the right agent structure and skills. It analyzes your plan's feature count, phase structure, and parallelization potential to decide the tier. Higher tiers automatically add independent agents and inter-agent communication skills for more complex setups.
 
 | Tier | Mode | Best For |
 |------|------|----------|
@@ -54,15 +54,15 @@ Automatically determines the work mode based on project scale, equipping the rig
 
 ### 4. Skill & MCP Auto-Discovery
 
-Searches community catalogs during the refine step and installs after user confirmation.
+During the refine step, your plan's tech stack and requirements are analyzed to automatically search community catalogs for matching skills and MCP servers. Results are presented as a list, and only user-confirmed items get installed. Specialized skills for libraries like Remotion, Stripe, or react-pdf are discovered automatically.
 
 ### 5. Cross-Session Context Continuity
 
-`decisions.md` and `lessons.md` accumulate automatically. Running `/project-launch:build` reads all prior records and restores context.
+`decisions.md` accumulates technical decisions (stack changes, API choices, architecture shifts), while `lessons.md` captures build failure causes and fixes. Running `/project-launch:build` in a new session reads the full plan + accumulated records + `git log`, determines what's been completed, and presents today's tasks. Even after days away, there's no need to re-explain context from scratch.
 
 ### 6. Early Mistake Prevention
 
-Validation scripts catch stack/dependency conflicts, missing configs, and security gaps. Non-standard combos get early warnings.
+Validation scripts run automatically during setup to catch stack/dependency conflicts, missing environment configs, and security gaps. For example, non-standard combos like Remotion + Next.js that cause bundler conflicts are detected with isolation guidance provided, and missing required settings trigger warnings.
 
 ---
 
@@ -107,6 +107,7 @@ claude plugin list
 
 Run `/project-launch:plan` → `project-plan-prompt.md` auto-generated → Paste prompt into claude.ai and complete `project-plan.md` through interview → Save `project-plan.md` in project root
 
+> **Instructions shown when command runs:**
 > 1. Open `project-plan-prompt.md` and fill in `[Project Name]` and `Project Overview`.
 > 2. Paste the full prompt into **claude.ai** and complete the plan through conversation.
 > 3. Save the finished plan as `project-plan.md` in the project root.
@@ -116,6 +117,7 @@ Run `/project-launch:plan` → `project-plan-prompt.md` auto-generated → Paste
 
 Run `/project-launch:refine` → `project-refine-prompt.md` auto-generated → Paste prompt into Claude Code for technical review + skill/MCP search → Refine `project-plan.md` → Save in project root (overwrite)
 
+> **Instructions shown when command runs:**
 > 1. Open `project-refine-prompt.md` and paste the prompt into **Claude Code**.
 > 2. Refine `project-plan.md` through conversation with Claude Code.
 > 3. Save the refined plan back to `project-plan.md` in the project root.

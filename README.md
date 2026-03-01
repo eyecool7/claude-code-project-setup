@@ -36,15 +36,15 @@
 
 ### 1. 2-pass 계획서 설계
 
-claude.ai에서 인터뷰로 기획 → Claude Code에서 기술 심층 리뷰. 두 단계를 거쳐 빈틈 없는 계획서를 완성합니다. project-plan-prompt 및 project-refine-prompt를 제공합니다.
+claude.ai에서 인터뷰로 기획 → Claude Code에서 기술 심층 리뷰. 두 단계를 거쳐 빈틈 없는 계획서를 완성합니다. 1-pass에서는 제품 컨텍스트, 핵심 기능, 워크플로우, 구현 순서를 구조화된 인터뷰로 잡고, 2-pass에서는 스택 호환성 검증, 의존성 충돌 점검, 필요한 스킬·MCP 추천까지 기술적 깊이를 더합니다. 각 단계에 맞는 project-plan-prompt와 project-refine-prompt를 제공하므로, 프롬프트를 직접 작성할 필요가 없습니다.
 
-### 2. 4단계 세팅 자동화
+### 2. 4단계 계획/세팅/구축 자동화
 
-/plan → /refine → /setup → /build 커맨드를 순서대로 실행하여 계획/세팅/구축 과정을 손쉽게 완성할 수 있습니다.
+/plan → /refine → /setup → /build 명령어를 순서대로 실행하여 계획/세팅/구축 과정을 손쉽게 완성할 수 있습니다. setup 단계에서 CLAUDE.md, rules, skills, agents, commands, hooks, settings까지 20개 파일이 계획서 기반으로 자동 생성됩니다. CLAUDE.md의 길이, 보안 설정의 수준, 에이전트 구성까지 모두 계획서가 결정하므로 일관된 프로젝트 환경이 만들어지고 기획의도에 충실한 결과물이 구축됩니다.
 
 ### 3. Tier별 작업 모드
 
-프로젝트 규모에 따라 작업 방식을 자동 판단하여 필요한 에이전트 구조와 스킬을 갖춥니다.
+프로젝트 규모에 따라 작업 방식을 자동 판단하여 필요한 에이전트 구조와 스킬을 갖춥니다. 계획서의 기능 수, Phase 구조, 병렬 작업 가능 여부를 분석해서 Tier를 결정합니다. Tier가 올라갈수록 독립 에이전트, 에이전트 간 통신 스킬 등 더 복잡한 구성이 자동으로 추가됩니다.
 
 | Tier | 모드 | 적합한 경우 |
 |------|------|-------------|
@@ -54,15 +54,15 @@ claude.ai에서 인터뷰로 기획 → Claude Code에서 기술 심층 리뷰. 
 
 ### 4. 스킬·MCP 자동 탐색
 
-refine 단계에서 커뮤니티 카탈로그를 검색하고, 사용자 확인 후 설치합니다.
+refine 단계에서 계획서의 기술 스택과 요구사항을 분석하여 커뮤니티 카탈로그에서 필요한 스킬과 MCP 서버를 자동으로 검색합니다. 검색 결과는 목록으로 제시되며, 사용자가 확인한 항목만 설치됩니다. Remotion, Stripe, react-pdf 같은 특정 라이브러리 전용 스킬도 자동으로 찾아줍니다.
 
 ### 5. 세션 간 맥락 연속
 
-`decisions.md`와 `lessons.md`가 자동으로 축적됩니다. `/project-launch:build` 실행 시 이전 기록을 전부 읽고 맥락을 복구합니다.
+`decisions.md`에는 기술 결정(스택 변경, API 확정, 설계 변경 등)이, `lessons.md`에는 빌드 실패 원인과 해결책이 자동으로 축적됩니다. 새 세션에서 `/project-launch:build`를 실행하면 계획서 전체 + 축적된 기록 + `git log`를 읽고, 어디까지 완료했는지 판별한 뒤 오늘 할 일을 제시합니다. 며칠 후 돌아와도 맥락을 처음부터 설명할 필요가 없습니다.
 
 ### 6. 실수 사전 차단
 
-스택·의존성 충돌, 빠진 설정, 보안 허점을 검증 스크립트가 잡아냅니다. 비표준 조합도 사전에 경고합니다.
+setup 과정에서 검증 스크립트가 자동 실행되어, 스택·의존성 충돌, 빠진 환경 설정, 보안 허점을 사전에 잡아냅니다. 예를 들어 Remotion + Next.js처럼 번들러가 충돌하는 비표준 조합을 감지하면 격리 방법을 안내하고, 필요한 설정이 누락되면 경고를 표시합니다.
 
 ---
 
@@ -107,6 +107,7 @@ claude plugin list
 
 `/project-launch:plan` 명령어 실행 → `project-plan-prompt.md` 자동 생성 → 프롬프트를 claude.ai에 붙이고 인터뷰를 통해 `project-plan.md` 완성 → 프로젝트 루트에 `project-plan.md` 저장
 
+> **명령어 실행 시 안내 문구:**
 > 1. `project-plan-prompt.md`를 열어서 `[프로젝트 이름]`과 `프로젝트 개요`를 채우세요.
 > 2. 프롬프트 전체 내용을 **claude.ai** 채팅창에 붙여넣고 대화하며 계획서를 완성하세요.
 > 3. 완성된 계획서를 `project-plan.md`로 저장하고 프로젝트 루트에 넣으세요.
@@ -116,6 +117,7 @@ claude plugin list
 
 `/project-launch:refine` 명령어 실행 → `project-refine-prompt.md` 자동 생성 → 프롬프트를 Claude Code에 붙이고 기술 리뷰 + 스킬/MCP 검색 → `project-plan.md` 고도화 → 프로젝트 루트에 저장 (엎어쓰기)
 
+> **명령어 실행 시 안내 문구:**
 > 1. `project-refine-prompt.md`를 열어서 프롬프트 내용을 **Claude Code** 채팅창에 붙여넣습니다.
 > 2. Claude Code와 대화하며 `project-plan.md` 계획서를 고도화하세요.
 > 3. 수정된 계획서를 프로젝트 루트에 `project-plan.md`로 다시 저장합니다.
