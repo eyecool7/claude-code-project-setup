@@ -29,16 +29,15 @@ Follow 4 commands, and project-tailored config is auto-generated.
 4. **`/build`** — Project build: status analysis and session goals every session
 
 ```
-claude-code-project-launch/
-├── .claude-plugin/marketplace.json
-├── plugins/project-launch/
-│   ├── .claude-plugin/plugin.json
-│   ├── commands/          ← plan, refine, setup, build
-│   ├── templates/         ← Templates referenced during generation
-│   └── scripts/           ← Analysis/validation scripts
-├── README.md
-├── README.en.md
-└── LICENSE
+[Session 1 — Plan]                [Session 2 — Setup]      [Session 3+ — Build]
+
+ /plan → Generate prompt           /setup → Auto-setup      /build → Status check
+   ↓                                 ↓                       ↓
+ Write plan in claude.ai           CLAUDE.md                Where you left off
+   ↓                               .claude/ (20 files)      Today's tasks
+ /refine → Technical review        Setup record preserved   Previous context restored
+   ↓
+ project-plan.md complete
 ```
 
 ---
@@ -48,10 +47,16 @@ claude-code-project-launch/
 ### Method 1: Claude Code Plugin (Recommended)
 
 Add the marketplace inside Claude Code first.
+
+```
 /plugin marketplace add eyecool7/claude-code-project-launch
+```
 
 Then install the plugin.
+
+```
 /plugin install project-launch@eyecool7
+```
 
 ### Method 2: Terminal CLI
 
@@ -251,6 +256,23 @@ my-project/
 | Commands (4) | `/project-launch:plan`, `refine`, `setup`, `build` |
 | Templates (27) | CLAUDE.md, rules, skills, agents, commands, hooks, settings, records generation + 2 prompts |
 | Scripts (3) | analyze-project, validate-env, validate-setup |
+
+---
+
+## Plugin Structure
+
+```
+claude-code-project-launch/
+├── .claude-plugin/marketplace.json
+├── plugins/project-launch/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/          ← plan, refine, setup, build
+│   ├── templates/         ← Templates referenced during generation
+│   └── scripts/           ← Analysis/validation scripts
+├── README.md
+├── README.en.md
+└── LICENSE
+```
 
 ---
 

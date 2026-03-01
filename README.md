@@ -29,16 +29,15 @@
 4. **`/build`** — 프로젝트 구축: 매 세션마다 현황 분석과 세션 목표 제시
 
 ```
-claude-code-project-launch/
-├── .claude-plugin/marketplace.json
-├── plugins/project-launch/
-│   ├── .claude-plugin/plugin.json
-│   ├── commands/          ← plan, refine, setup, build
-│   ├── templates/         ← 생성 시 참조할 템플릿
-│   └── scripts/           ← 분석/검증 스크립트
-├── README.md
-├── README.en.md
-└── LICENSE
+[세션 1 — 기획]                    [세션 2 — 세팅]          [세션 3+ — 구축]
+
+ /plan → 프롬프트 생성              /setup → 자동 세팅       /build → 현황 분석
+   ↓                                 ↓                       ↓
+ claude.ai에서 계획서 작성          CLAUDE.md                어디까지 했는지 파악
+   ↓                               .claude/ (20개 파일)      오늘 할 일 제시
+ /refine → 기술 리뷰               셋업 기록 보존            이전 맥락 자동 복구
+   ↓
+ project-plan.md 완성
 ```
 
 ---
@@ -48,10 +47,16 @@ claude-code-project-launch/
 ### 방법 1: Claude Code 플러그인 (권장)
 
 Claude Code 안에서 먼저 마켓플레이스를 추가합니다.
+
+```
 /plugin marketplace add eyecool7/claude-code-project-launch
+```
 
 그 다음 플러그인을 설치합니다.
+
+```
 /plugin install project-launch@eyecool7
+```
 
 ### 방법 2: 터미널 CLI
 
@@ -251,6 +256,23 @@ my-project/
 | 커맨드 (4개) | `/project-launch:plan`, `refine`, `setup`, `build` |
 | 템플릿 (27개) | CLAUDE.md, rules, skills, agents, commands, hooks, settings, records 생성용 + 프롬프트 2개 |
 | 스크립트 (3개) | analyze-project, validate-env, validate-setup |
+
+---
+
+## 플러그인 구조
+
+```
+claude-code-project-launch/
+├── .claude-plugin/marketplace.json
+├── plugins/project-launch/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/          ← plan, refine, setup, build
+│   ├── templates/         ← 생성 시 참조할 템플릿
+│   └── scripts/           ← 분석/검증 스크립트
+├── README.md
+├── README.en.md
+└── LICENSE
+```
 
 ---
 
