@@ -31,22 +31,17 @@ Follow 4 commands, and project-tailored config is auto-generated.
 4. **`/project-launch:build`** — Project build: status analysis and session goals every session
 
 ```
-[Session 1 — Plan]                [Session 2 — Setup]      [Session 3+ — Build]
-
- /plan → Generate prompt           /setup → Auto-setup      /build → Status check
-   ↓                                 ↓                       ↓
- Write plan in claude.ai           CLAUDE.md                Where you left off
-   ↓                               .claude/ (20 files)      Today's tasks
- /refine → Technical review        Setup record preserved   Previous context restored
-   ↓
- project-plan.md complete
+/plan          →  /refine        →  /setup           →  /build
+Plan creation      Technical review   Auto-setup          Build guide
+(claude.ai)        (Claude Code)     CLAUDE.md +          Where you left off
+                                     20 config files      Today's tasks
 ```
 
 ---
 
 ## Installation
 
-**Method 1: Claude Code Plugin (Recommended)**
+### Method 1: Claude Code Plugin (Recommended)
 
 Add the marketplace inside Claude Code first.
 
@@ -60,7 +55,7 @@ Then install the plugin.
 /plugin install project-launch@eyecool7
 ```
 
-**Method 2: Terminal CLI**
+### Method 2: Terminal CLI
 
 Run in a regular terminal (zsh/bash).
 
@@ -72,7 +67,7 @@ claude plugin install project-launch@eyecool7
 claude plugin list
 ```
 
-**Requirements**
+### Requirements
 
 - Claude Code v1.0.33 or higher (`claude --version`)
 - Update: `npm update -g @anthropic-ai/claude-code`

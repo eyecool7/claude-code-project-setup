@@ -31,22 +31,17 @@
 4. **`/project-launch:build`** — 프로젝트 구축: 매 세션마다 현황 분석과 세션 목표 제시
 
 ```
-[세션 1 — 기획]                    [세션 2 — 세팅]          [세션 3+ — 구축]
-
- /plan → 프롬프트 생성              /setup → 자동 세팅       /build → 현황 분석
-   ↓                                 ↓                       ↓
- claude.ai에서 계획서 작성          CLAUDE.md                어디까지 했는지 파악
-   ↓                               .claude/ (20개 파일)      오늘 할 일 제시
- /refine → 기술 리뷰               셋업 기록 보존            이전 맥락 자동 복구
-   ↓
- project-plan.md 완성
+/plan          →  /refine        →  /setup           →  /build
+계획서 작성         기술 리뷰          자동 세팅            구축 가이드
+(claude.ai)        (Claude Code)     CLAUDE.md +          진행 상황 파악
+                                     설정 20개 파일        오늘 할 일 제시
 ```
 
 ---
 
 ## 설치 방법
 
-**방법 1: Claude Code 플러그인 (권장)**
+### 방법 1: Claude Code 플러그인 (권장)
 
 Claude Code 안에서 먼저 마켓플레이스를 추가합니다.
 
@@ -60,7 +55,7 @@ Claude Code 안에서 먼저 마켓플레이스를 추가합니다.
 /plugin install project-launch@eyecool7
 ```
 
-**방법 2: 터미널 CLI**
+### 방법 2: 터미널 CLI
 
 일반 터미널 (zsh/bash)에서 아래를 복붙하여 실행하세요.
 
@@ -72,7 +67,7 @@ claude plugin install project-launch@eyecool7
 claude plugin list
 ```
 
-**요구사항**
+### 요구사항
 
 - Claude Code v1.0.33 이상 (`claude --version`)
 - 업데이트: `npm update -g @anthropic-ai/claude-code`
