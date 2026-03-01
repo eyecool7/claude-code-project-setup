@@ -127,7 +127,28 @@ claude plugin list
 
 `/project-launch:setup` 명령어 실행 → CLAUDE.md + .claude/ + .mcp.json 자동 생성 → 셋업 완료 시 `project-plan.md`에 **셋업 결과**가 자동 추가 → `/clear` 후에도 셋업 맥락 보존
 
-> `/clear`로 컨텍스트를 비우고 `/project-launch:build`를 실행하면 계획서 기반 개발이 시작됩니다.
+> **세팅 미리보기 출력 후 승인을 받고 실행합니다:**
+>
+> ```
+> 📁 생성될 파일 (22개)
+> ├── CLAUDE.md (약 82줄)
+> ├── .claude/
+> │   ├── rules/     → conventions, security, error-handling, testing, frontend
+> │   ├── skills/    → project-directory, easy-refactoring, skill-discovery
+> │   ├── agents/    → test-runner, code-reviewer, debugger, script-analyzer
+> │   ├── commands/  → /check, /review, /commit-push-pr
+> │   ├── hooks/     → session-start, edit-monitor, pre-commit-check
+> │   └── settings.json, lessons.md, decisions.md
+> └── .mcp.json (생성 안 함)
+>
+> 🔌 추가 스킬: remotion-community (커뮤니티 설치)
+> 🤖 작업 방식: Tier 2 — 서브에이전트
+> ⚠️ 호환성 주의: Remotion + Next.js 번들러 충돌 (격리 필요)
+>
+> 이 내용으로 세팅을 진행할까요?
+> ```
+>
+> 승인하면 세팅 실행 → 완료 후 `/clear` → `/project-launch:build`로 구축 시작.
 
 ### Step 4. 구축 시작
 

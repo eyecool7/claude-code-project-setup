@@ -127,7 +127,28 @@ Run `/project-launch:refine` → `project-refine-prompt.md` auto-generated → P
 
 Run `/project-launch:setup` → CLAUDE.md + .claude/ + .mcp.json auto-generated → **Setup results** auto-appended to `project-plan.md` → Setup context preserved even after `/clear`
 
-> Run `/clear` then `/project-launch:build` to start plan-based development.
+> **Shows a setup preview for approval before executing:**
+>
+> ```
+> 📁 Files to generate (22)
+> ├── CLAUDE.md (~82 lines)
+> ├── .claude/
+> │   ├── rules/     → conventions, security, error-handling, testing, frontend
+> │   ├── skills/    → project-directory, easy-refactoring, skill-discovery
+> │   ├── agents/    → test-runner, code-reviewer, debugger, script-analyzer
+> │   ├── commands/  → /check, /review, /commit-push-pr
+> │   ├── hooks/     → session-start, edit-monitor, pre-commit-check
+> │   └── settings.json, lessons.md, decisions.md
+> └── .mcp.json (none)
+>
+> 🔌 Additional skills: remotion-community (community install)
+> 🤖 Work mode: Tier 2 — Subagents
+> ⚠️ Compatibility: Remotion + Next.js bundler conflict (isolation required)
+>
+> Proceed with this setup?
+> ```
+>
+> Approve to run setup → then `/clear` → `/project-launch:build` to start building.
 
 ### Step 4. Start Building
 
