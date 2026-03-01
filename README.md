@@ -28,7 +28,16 @@
 1. **`/project-launch:plan`** — 계획서 작성: 구조화된 인터뷰를 통해 프로젝트 계획서 생성
 2. **`/project-launch:refine`** — 계획서 고도화: 기술 심층 리뷰와 스킬·MCP 탐색으로 계획서 완성
 3. **`/project-launch:setup`** — 프로젝트 세팅: 계획서 기반 CLAUDE.md 및 설정 파일 자동 생성
-4. **`/project-launch:build`** — 프로젝트 구축: 매 세션마다 현황 분석과 세션 목표 제시
+4. **`/project-launch:build`** — 프로젝트 구축: 매 세션마다 현황 분석과 구축 계획 제시
+
+**계획서(`project-plan.md`) 데이터 흐름:**
+
+| 단계 | 계획서에 하는 일 |
+|------|----------------|
+| `plan` | Section 1-5 정의 + 에이전트·스킬 매핑 포함하여 Section 6 작성 |
+| `refine` | 인터뷰·검색 결과 반영하여 Section 3-6 갱신 |
+| `setup` | 계획서 기반 설정 파일 생성 + Section 7(셋업 결과) 추가 |
+| `build` | Section 6 기반 구축 계획 미리보기 출력 (읽기 전용) |
 
 ---
 
