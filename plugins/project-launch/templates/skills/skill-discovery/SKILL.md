@@ -21,14 +21,29 @@ git clone --depth 1 https://github.com/johunsang/vive-md.git /tmp/vive-md
 
 | 우선순위 | 소스 | 경로/URL | 용도 |
 |:-------:|------|----------|------|
-| 1 | vive-md 스킬 카탈로그 | `/tmp/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md` | 380+ 스킬 키워드 검색 |
+| 1 | vive-md 스킬 카탈로그 | `/tmp/vive-md/vibe-coding/resources/Awesome-Claude-Skills-한국어-가이드.md` | 커뮤니티 스킬 키워드 검색 (한국어 가이드) |
 | 2 | vive-md MCP 서버 카탈로그 | `/tmp/vive-md/vibe-coding/mcp/04-MCP-서버-카탈로그.md` | 스택별 MCP 서버 선정 |
 | 3 | vive-md MCP 설정 패턴 | `/tmp/vive-md/vibe-coding/mcp/03-MCP-실전-패턴-모음.md` | 검증된 .mcp.json 레퍼런스 |
-| 4 | Anthropic 공식 | `github.com/anthropics/skills` | 공식 스킬 8.3k
-| 5 | Trail of Bits | `github.com/trailofbits/skills` | 보안/정적분석/리뷰 3k|
+| 4 | Anthropic 공식 | `github.com/anthropics/skills` | 공식 스킬 (⭐ 80k) |
+| 5 | Trail of Bits | `github.com/trailofbits/skills` | 보안/정적분석/리뷰 (⭐ 3k) |
 
 우선순위 1~3은 vive-md 한 번 클론으로 전부 검색 가능.
 4~5는 해당 분야가 프로젝트에 필요할 때만 추가 클론.
+
+### 웹 마켓플레이스 (보조 참고)
+
+GitHub 소스에서 못 찾았을 때, 아래 웹 마켓플레이스에서 추가 검색한다.
+WebSearch/WebFetch 도구로 접근 가능.
+
+| 사이트 | URL | 특징 |
+|--------|-----|------|
+| aitmpl.com | `https://www.aitmpl.com/skills` | Skills/Agents/Commands/Hooks/MCP/Templates. Stack Builder로 스택별 필터 |
+| SkillHub | `https://skillhub.club` | 7k+ 스킬. AI 5차원 평가 (보안, 성능, 호환성 등) |
+| Skills MP | `https://skillsmp.com` | 66k+ GitHub SKILL.md 자동 수집. 대규모 검색에 유용 |
+| MCP Market | `https://mcpmarket.com/tools/skills` | Agent Skills + MCP 서버 통합 디렉토리 |
+| mcpservers.org | `https://mcpservers.org/claude-skills` | Claude Skills 라이브러리 + MCP 서버 카탈로그 |
+
+**주의:** 웹 마켓플레이스는 보조 수단이다. 우선순위 1~5 GitHub 소스를 먼저 검색한 후, 결과가 부족할 때만 참고한다.
 
 **필수 규칙: 프론트엔드가 포함된 프로젝트면 ui-ux-pro-max를 무조건 설치한다.**
 ```bash

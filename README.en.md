@@ -164,9 +164,17 @@ Run `/project-launch:build` → Plan-based status analysis + session goals outpu
 > | Phase 3: Content Generation | ⬜ | Starts after Phase 2 |
 >
 > **Current Phase:** Phase 2 — Script Parser
-> **Session goals:**
-> 1. Complete page delimiter auto-detection logic
-> 2. Define ParsedScript types and write unit tests
+>
+> 🔧 **Session Build Order**
+>
+> | # | Task | Agent | Skill | Done When |
+> |---|------|:-----:|-------|-----------|
+> | 1 | Script parser (`lib/parser.ts`) | script-analyzer | script-parser | zod schema validation passes |
+> | 2 | ParsedScript types + unit tests | — | — | `pnpm test` passes |
+>
+> **Ralph Loop:** Tasks 1,2 ✅ (mechanically verifiable)
+>
+> Proceed with this order?
 >
 > **Notes:** lessons.md — Importing Remotion directly in Next.js causes bundler conflicts (isolation required)
 
@@ -181,7 +189,7 @@ Run `/project-launch:build` → Plan-based status analysis + session goals outpu
 | 3. Tool Design | MCP server selection, skill selection, .mcp.json finalization | ✅ |
 | 4. Implementation Design | Tech stack, agent structure, skill list, error strategy, dependencies | ✅ |
 | 5. Technical Decisions | UI tools, data flow, URL structure, external services | ⚪ |
-| 6. Implementation Order | Phase-by-phase dependency roadmap | ✅ |
+| 6. Implementation Order | Phase-by-phase execution plan — agent, skill, file location, verification mapping (synthesis of Sections 1-5) | ✅ |
 
 ---
 
